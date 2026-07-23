@@ -8,6 +8,7 @@ function Header() {
                     <a>Quizzes</a>
                     <a>Endless Mode</a>
                     <a>Leaderboard</a>
+                    <a>Library</a>
                     <button className="signup-button">Sign up</button>
                 </ul>
             </nav>
