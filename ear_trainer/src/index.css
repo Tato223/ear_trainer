@@ -6,6 +6,13 @@
 
   --accent-color : #57C780;
   --accent-color-gradient : #1A783C;
+
+    font-family: Inter, sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+}
+
+@supports (font-variation-settings: normal) {
+  :root { font-family: InterVariable, sans-serif; }
 }
 
 * {
@@ -14,10 +21,15 @@
 
 h1 {
   color: var(--secondary-color);
+  font-size: clamp(1em, 1.5em, 1.5em);
 }
 
 h2, .nav-links > a {
   color: var(--secondary-color);
+}
+
+p {
+  font-size: clamp(1em, 4vw + 1em + 1.2em);
 }
 
 body {
@@ -53,15 +65,16 @@ header {
 }
 
 .header-title {
-  padding: 2% 30% 2% 2%;
-  font-size: 2em;
+  padding: 2% 25% 2% 2%;
+  font-size: 2.5em;
+  font-weight: bolder;
 }
 
 .nav-links {
   display: flex;
   flex-direction: row;
-  gap: 9%;
-  padding-right: 5%;
+  gap: 7%;
+  padding-right: 2%;
   justify-content: right;
   align-items: center;
   width: 100%;
@@ -83,7 +96,7 @@ header {
   color: white;
   padding: 1.5%;
   min-height: 35px;
-  min-width: auto;
+  min-width: 70px;
   border-style: none;
   border-radius: 8px;
 }
@@ -93,6 +106,15 @@ header {
   height: 100dvh;
   width: 100%;
 
+}
+
+hr {
+
+  margin: 2% 0% 10% 0%;
+
+  max-width: 90dvw;
+  border-style: solid;
+  border-color: var(--header-color);
 }
 
 footer {

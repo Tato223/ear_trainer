@@ -5,10 +5,11 @@ body {
 }
 
 .hero-container {
-  padding-top: 5%;
+  padding-top: 8%;
+  padding-left: 5%;
 
   width: 90%;
-  height: 60%;
+  height: 70%;
 
   display: flex;
   flex-direction: column;
@@ -18,30 +19,50 @@ body {
 .hero {
   font-size: 3.5em;
   padding: 1%;
+  max-width: 45dvw;
 }
 
 .hero__subtitle {
   padding-left: 1%;
   font-size: 1.5em;
+  color: rgba(234, 214, 227, .55);
+  max-width: 35dvw;
 }
 
 .cta-button {
   margin-top: 1.5%;
-  height: 15%;
-  width: 15%;
+  height: 75px;
+  width: 150px;
 
-  background-image: linear-gradient(to bottom, var(--accent-color), var(--accent-color-gradient));
+  background-color: var(--accent-color);
   color: white;
   border-style: none;
   border-radius: 8px;
   
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   padding-left: 1%;
+
+  font-size: 1.25em;
+  font-weight: thick;
 }
 
 .cta-button:hover {
   cursor: pointer;
   transform: scale(1.025);
+}
+
+.about-container {
+  padding-left: 5%;
+}
+
+.about-heading {
+  font-size: 2em;
+  font-weight: bold;
+  color: var(--heading-color)
+}
+
+.about-text {
+  max-width: 90dvw;
 }
 
 h1, h2 {
