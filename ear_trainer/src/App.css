@@ -1,0 +1,30 @@
+header {
+  display: flex;
+  flex-direction: row;
+  max-height: 10dvh;
+
+  align-items: center;
+
+  padding: 0%, 2%, 0%, 2%;
+
+  overflow-y: hidden;
+}
+
+.nav-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.header-title {
+  padding: 2% 20% 2% 2%;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: row;
+  gap: 10%;
+  padding: 5%;
+  justify-content: center;
+  width: 100%;
+}

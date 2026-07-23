@@ -1,0 +1,16 @@
+:root {
+  --background-color : #693556;
+  --primary-color : #CF68AA;
+  --secondary-color : #4F2841;
+  --accent-color : #57C780;
+}
+
+body {
+  margin: 0;
+  padding: 0px;
+  min-height: 100dvh;
+}
+
+header {
+  background-color: var(--secondary-color);
+}
