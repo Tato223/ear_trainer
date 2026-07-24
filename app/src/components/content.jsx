@@ -11,14 +11,13 @@ function Content() {
 
             <div className="about-container">
                 <h2 className="about-heading">
-                    About
+                    About EarTrainer
                 </h2>
 
 
                 <p className="about-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Ipsa vel laboriosam dolores eveniet, reiciendis recusandae
-                    nesciunt inventore saepe necessitatibus optio non natus, maiores voluptate totam!
+                    EarTrainer is an educational platform made to develop strong pitch recognition skills among 
+                    musicians through structured quizzes, randomized assessments, and a library for self-paced learning.
                 </p>
             </div>
         </div>
