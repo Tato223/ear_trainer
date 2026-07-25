@@ -1,4 +1,4 @@
-function Content() {
+function HomeContent() {
     return (
         <div className="content-container">
             <div className="hero-container">
@@ -25,4 +25,4 @@ function Content() {
     );
 }
 
-export default Content
+export default HomeContent

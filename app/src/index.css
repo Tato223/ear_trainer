@@ -4,8 +4,12 @@
   --secondary-color : #EAD6E3;
   --header-color : #4F2841;
 
+  --subtitle-color : rgba(234, 214, 227, .55);
+
   --accent-color : #57C780;
   --accent-color-gradient : #1A783C;
+
+  --card-color : rgba(0, 0, 0, .15);
 
     font-family: Inter, sans-serif;
     font-feature-settings: 'liga' 1, 'calt' 1;
@@ -13,6 +17,10 @@
 
 @supports (font-variation-settings: normal) {
   :root { font-family: InterVariable, sans-serif; }
+}
+
+html {
+  overflow-y: scroll;
 }
 
 * {
@@ -29,13 +37,14 @@ h2, .nav-links > a {
 }
 
 p {
-  font-size: clamp(1em, 4vw + 1em + 1.2em);
+  font-size: clamp(.5em, 2vw + .5em, 1em);
 }
 
 body {
   margin: 0;
   padding: 0px;
   min-height: 100dvh;
+  scrollbar-width: auto;
 }
 
 header {
@@ -79,6 +88,10 @@ header {
   justify-content: right;
   align-items: center;
   width: 100%;
+}
+
+a {
+  text-decoration: none;
 }
 
 .nav-links > a:hover,
