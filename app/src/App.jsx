@@ -9,12 +9,13 @@ import './App.css'
 import Home from './pages/home'
 import Quizzes from './pages/quizzes'
 import EndlessPage from './pages/endless_page'
+import LeaderboardPage from './pages/leaderboard_page'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
   {path: "/quizzes", element: <Quizzes/>},
   {path: "/endless", element: <EndlessPage/>},
-  {path: "/leaderboard", element: <Home/>},
+  {path: "/leaderboard", element: <LeaderboardPage/>},
   {path: "/library", element: <Home/>}
 ]);
 
