@@ -103,16 +103,20 @@ h1, h2 {
 
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 50px;
   justify-content: center;
 }
 
 .quiz-card {
   display: flex;
   flex-direction: column;
-  
-  width: clamp(250px, 300px, 450px);
-  height: clamp(20dvh, 55dvh, 70vh);
+
+  min-height: 350px;
+  min-width: 300px;
+
+  max-height: 30dvh;
+  max-width: 300px;
+
   background-color: var(--card-color);
   border-radius: 24px;
 }
@@ -143,6 +147,8 @@ h1, h2 {
   color: white;
   font-size: medium;
 
-  margin-top: 40%;
-  position: relative;
+  margin-top: 30%;
+
+  border-style: None;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
