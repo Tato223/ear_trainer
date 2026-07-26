@@ -87,7 +87,7 @@ h1, h2 {
   margin: 0px;
 }
 
-.quiz-page-instructions {
+.instructions {
   padding: 5% 0% 1% 0%;
   min-width: 100dvw;
   min-height: 5dvh;
@@ -151,4 +151,69 @@ h1, h2 {
 
   border-style: None;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.endless-content {
+  min-width: 100dvw;
+  padding: 5% 0% 5% 0%;
+  display: flex;
+  flex-direction: column;
+}
+
+.endless-container {
+
+  align-self: center;
+
+  padding: 2.5% 0% 2.5% 0%;
+
+  min-height: 75dvh;
+  max-height: 600px;
+
+  width: 60dvw;
+
+  margin: 0% 2.5% 0% 2.5%;
+
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  column-gap: 30px;
+
+  justify-items: center;
+}
+
+.endless-card {
+
+  padding: 5%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--card-color);
+
+  height: 150px;
+  width: 350px;
+
+  border-radius: 24px;
+}
+
+.endless-card__name {
+  padding: 5% 5% 2.5% 5%;
+  text-decoration: underline;
+}
+
+.endless-card__text {
+  padding: 0% 5% 2.5% 5%;
+  text-align: center;
+  color: var(--subtitle-color);
+}
+
+.endless-card__button {
+  margin-top: 10px;
+  padding: 4%;
+  border-radius: 40px;
+  border-style: none;
+  background-color: var(--accent-color);
+  cursor: pointer;
+
+
 }

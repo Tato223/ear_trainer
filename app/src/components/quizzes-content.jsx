@@ -4,7 +4,7 @@ function QuizzesContent() {
     return(
         <div className="content-container">
         
-            <h2 className="quiz-page-instructions">Select a Quiz to get started!</h2>
+            <h2 className="instructions">Select a Quiz to get started!</h2>
 
             <div className="quiz-container">
 

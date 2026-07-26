@@ -8,11 +8,12 @@ import { RouterProvider } from 'react-router/dom'
 import './App.css'
 import Home from './pages/home'
 import Quizzes from './pages/quizzes'
+import EndlessPage from './pages/endless_page'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
   {path: "/quizzes", element: <Quizzes/>},
-  {path: "/endless", element: <Home/>},
+  {path: "/endless", element: <EndlessPage/>},
   {path: "/leaderboard", element: <Home/>},
   {path: "/library", element: <Home/>}
 ]);
