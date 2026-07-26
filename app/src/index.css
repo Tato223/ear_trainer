@@ -159,3 +159,7 @@ footer {
 .copyright {
   text-align: center;
 }
+
+button:hover {
+  transform: scale(1.025);
+}

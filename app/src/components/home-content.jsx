@@ -6,7 +6,6 @@ function HomeContent() {
                 <p className="hero__subtitle">Develop confident pitch recognition with quizzes, endless challenges, and a complete note library.</p>
                 <button className="cta-button">Get Started</button>
 
-                <hr/>
             </div>
 
             <div className="about-container">

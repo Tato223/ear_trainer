@@ -5,12 +5,10 @@ body {
 }
 
 .hero-container {
-  padding-top: 5%;
-  padding-left: 5%;
-  padding-bottom: 1%;
+  padding: 7.5% 0% 1% 10%;
 
   width: 90%;
-  min-height: 65dvh;
+  min-height: 90dvh;
   max-height: 100dvh;
 
 
@@ -24,14 +22,15 @@ body {
 }
 
 .hero {
-  font-size: 3.5em;
+  font-size: 5em;
   padding: 1%;
   max-width: 45dvw;
+  height: 100%;
 }
 
 .hero__subtitle {
   padding-left: 1%;
-  font-size: clamp(1em, 1dvw + 1em, 1.5em);
+  font-size: clamp(1em, 1dvw + 2em, 2em);
   color: var(--subtitle-color);
 
   max-width: 35dvw;
@@ -54,6 +53,8 @@ body {
 
   font-size: 1.25em;
   font-weight: thick;
+
+  margin-left: 1%;
 }
 
 .cta-button:hover {
@@ -105,6 +106,8 @@ h1, h2 {
   flex-direction: row;
   gap: 50px;
   justify-content: center;
+
+  overflow-x: auto;
 }
 
 .quiz-card {
@@ -214,6 +217,7 @@ h1, h2 {
   border-style: none;
   background-color: var(--accent-color);
   cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .leaderboard-heading {
