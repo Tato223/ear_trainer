@@ -10,13 +10,14 @@ import Home from './pages/home'
 import Quizzes from './pages/quizzes'
 import EndlessPage from './pages/endless_page'
 import LeaderboardPage from './pages/leaderboard_page'
+import LibraryPage from './pages/library_page'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
   {path: "/quizzes", element: <Quizzes/>},
   {path: "/endless", element: <EndlessPage/>},
   {path: "/leaderboard", element: <LeaderboardPage/>},
-  {path: "/library", element: <Home/>}
+  {path: "/library", element: <LibraryPage/>}
 ]);
 
 function App() {
