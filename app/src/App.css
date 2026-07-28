@@ -310,12 +310,14 @@ h2 {
 }
 
 .signup-container {
-  margin-top: 5%;
+  margin: 5% 0% 5% 0%;
   width: 90dvw;
-  height: 70dvh;
+  min-height: 70%;
+  max-height: 90%;
   display: flex;
   justify-content: center;
   align-content: center;
+  min-height: 100%;
 }
 
 .signup-form {
@@ -325,6 +327,7 @@ h2 {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.21);
 
   min-width: 30%;
+  min-height: fit-content;
 
   display: flex;
   flex-direction: column;
@@ -332,14 +335,21 @@ h2 {
 
   background-color: var(--card-color);
 
-  gap: 36px;
+  gap: 5%;
 }
 
 .form-block {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2%;
+
+  color: var(--secondary-color);
 }
+
+.form-block > input::placeholder {
+  color: var(--secondary-color)
+}
+
 
 label {
   font-size: 1.15em;
@@ -357,12 +367,13 @@ label {
   min-height: 30px;
 
   padding: 8px;
-    background-color: var(--card-color);
+  background-color: var(--card-color);
 
   color: white;
 }
 
 .submit-btn {
+  margin-top: 5%;
   padding: 5%;
   border-radius: 12px;
   background-color: var(--accent-color);
@@ -371,4 +382,10 @@ label {
   font-size: 1.25em;
 
   color: white;
+}
+
+.signup-prompt {
+  text-align: center;
+  font-size: 2.5em;
+  color: var(--accent-color);
 }
