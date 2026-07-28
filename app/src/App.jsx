@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Header from './components/header'
-import Content from './components/home-content'
 import Footer from './components/footer'
 import { createBrowserRouter, Route } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
