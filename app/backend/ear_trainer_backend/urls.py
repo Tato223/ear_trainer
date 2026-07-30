@@ -20,5 +20,6 @@ from api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', views.read_users),
+    path('users/', views.user_list),
+    path('highscores/', views.highscores_list)
 ]
