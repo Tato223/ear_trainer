@@ -8,22 +8,22 @@ from .serializers import UserSerializer, HighScoreSerializer
 
 # Create your views here.
 
-@api_view(http_method_names=['GET', 'POST'])
+@api_view(http_method_names=["GET", "POST"])
 def user_list(request):
     
-    if request.method == 'GET':
+    if request.method == "GET":
         all_users = User.objects.all()
         serializer = UserSerializer(all_users, many=True)
         return JsonResponse({"data": serializer.data})
     
-    if request.method == 'POST':
-        serializer = UserSerializer(data=request.body)
+    if request.method == "POST":
+        serializer = UserSerializer(data=request.data)
         
         if serializer.is_valid():
-            serializer.save
+            serializer.save()
             return JsonResponse({"data": serializer.data})
         
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(http_method_names=["GET", "POST"])
 def highscores_list(request):
@@ -34,10 +34,10 @@ def highscores_list(request):
         return JsonResponse({"data": serializer.data})
 
     if request.method == "POST":
-        serializer = HighScoreSerializer(data=request.body)
+        serializer = HighScoreSerializer(data=request.data)
         
         if serializer.is_valid():
-            serializer.save
+            serializer.save()
             return JsonResponse({"data" : serializer.data})
         
     return Response(status=status.HTTP_400_BAD_REQUEST)
