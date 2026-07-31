@@ -5,9 +5,6 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     
-    def create(self, validated_data):
-        return AbstractUser.objects.create_user(**validated_data)
-    
     def __str__(self):
         return f"Username: {self.username}"
     

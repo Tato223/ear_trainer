@@ -116,6 +116,16 @@ a {
   border-radius: 8px;
 }
 
+.user-pfp__header {
+  color: var(--card-color);
+  border-radius: 50%;
+  align-self: center;
+}
+
+.user-pfp__header:hover {
+  cursor: pointer;
+}
+
 .content-container {
   background-color: var(--background-color);
   min-height: 100dvh;
