@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import User, HighScore
+from .models import HighScore, CustomUser
 
 # Register your models here.
-admin.site.register(User)
 admin.site.register(HighScore)
+admin.site.register(CustomUser)

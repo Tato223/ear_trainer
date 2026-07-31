@@ -1,12 +1,16 @@
 from rest_framework import serializers
-from .models import User, HighScore
+from .models import HighScore, CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta():
-        model = User
-        fields = ['id', 'username', 'hashed_password', 'email']
+        model = CustomUser
+        fields = ['id', 'username', 'password', 'email']
         
 class HighScoreSerializer(serializers.ModelSerializer):
+    
+    owned_by = serializers.ReadOnlyField(source='owned_by.username')
+    
     class Meta():
+        
         model = HighScore
-        fields: list = ['value', 'owned_by']
+        fields = ['value', 'owned_by']

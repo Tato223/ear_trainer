@@ -1,17 +1,24 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-class User(models.Model):
-    username = models.CharField(max_length=18, unique=True, default="Guest", editable=True)
-    hashed_password = models.CharField(max_length=255)
-    email = models.EmailField(editable=True)
+
+class CustomUser(AbstractUser):
     
-    def __str__(self) -> str:
-        return f"User: {self.username}"
+    def create(self, validated_data):
+        return AbstractUser.objects.create_user(**validated_data)
+    
+    def __str__(self):
+        return f"Username: {self.username}"
     
 class HighScore(models.Model):
     value = models.IntegerField(default=0)
-    owned_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    owned_by = models.OneToOneField(
+        CustomUser, 
+        on_delete=models.CASCADE, 
+        related_name="Owner"
+        )
     
     def __str__(self) -> str:
-        return f"High Score: {self.value} by {self.owned_by}"
+        return f"High Score: {self.value} by {str(self.owned_by)}"
