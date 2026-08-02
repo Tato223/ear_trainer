@@ -1,18 +1,18 @@
 import { Link } from "react-router";
 
 // Later fetch from users API endpoint
-let isLoggedIn = false;
+// let isLoggedIn = false;
 
 /*TODO -> 
 - Figure out React states
-- Created /auth page
+- Create /auth page
 - Figure out MIDI logic
 - Additional pages for quiz, endless, and library selections
-- User sidebar with basic optio
-- PRIVACY POLICT & TOS
+- User sidebar with basic options
+- PRIVACY POLICY & TOS
 */
 
-function Header({isLoggedIn}) {
+function Header({isLoggedIn=true}) {
     return (
         <header>
             <Link to="/">
@@ -28,13 +28,15 @@ function Header({isLoggedIn}) {
 
                     <div>
                         {isLoggedIn ? 
-                        
-                        (<Link to="/signup">
-                            <button className="signup-button">Sign up</button>
-                        </Link>) :
-                        (<Link to="/auth">
+
+                        (<Link to="/auth/login">
                             <img className="user-pfp__header" src="https://placehold.co/40"/>
+                        </Link>) :
+                        
+                        (<Link to="/auth/signup">
+                            <button className="signup-button">Sign up</button>
                         </Link>)
+
                         }   
 
                     </div>

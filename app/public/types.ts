@@ -4,8 +4,18 @@ export interface Note {
     
 }
 
+export interface Scale {
+    name: string,
+    notes: Note[]
+}
+
+export interface Interval {
+    value: number
+}
+
 export interface Question {
-    id: number,
     text: string,
-    answered: boolean
+    isAnswered: boolean,
+    options: Note[] | Scale[] | Interval,
+    answer: Note | Scale | Interval
 }

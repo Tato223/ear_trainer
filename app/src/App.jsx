@@ -13,6 +13,7 @@ import EndlessPage from './pages/endless_page'
 import LeaderboardPage from './pages/leaderboard_page'
 import LibraryPage from './pages/library_page'
 import SignupPage from './pages/sign_up_page'
+import LoginPage from './pages/login_page'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
   {path: "/endless", element: <EndlessPage/>},
   {path: "/leaderboard", element: <LeaderboardPage/>},
   {path: "/library", element: <LibraryPage/>},
-  {path: "/signup", element: <SignupPage/>}
+  {path: "/auth/signup", element: <SignupPage/>},
+  {path: "/auth/login", element: <LoginPage/>}
 ]);
 
 function App() {

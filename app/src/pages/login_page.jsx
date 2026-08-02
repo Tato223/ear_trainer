@@ -1,40 +1,31 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import FormBlock from "../components/form_block";
+import PropTypes from "prop-types";
 import { Form } from "react-router";
 
-export default function SignupPage() {
+export default function LoginPage() {
   return (
     <>
       <Header />
-      <SignupContent />
+      <LoginContent />
       <Footer />
     </>
   );
 }
 
-export function SignupContent() {
-
-  /* props = [
-    "label",
-    "text",
-    "id",
-    "max",
-    "min",
-    "placeholder"
-  ] */
+export function LoginContent() {
 
   return (
     <div className="content-container">
       <div className="signup-container">
 
-        <form className="signup-form">
+        <form className="login-form">
 
-          <h2 className="signup-prompt">Create an Account</h2>
+          <h2 className="login-prompt">Log in to Your Account</h2>
 
           <FormBlock label="Username" id="username-entry" type="text" min={3} max={12} isRequired={true} placeholder="Enter your username."/>
           <FormBlock label="Password" id="password-entry" type="password" min={3} max={12} isRequired={true} placeholder="Ex. MyPassword123"/>
-          <FormBlock label="Email" id="email-entry" type="email" min={3} max={12} isRequired={true} placeholder="Ex. yourEmail321@domain.com"/>
 
           <input className="submit-btn" type="submit" />
         </form>

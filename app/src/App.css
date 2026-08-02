@@ -310,7 +310,8 @@ h2 {
   text-decoration: underline;
 }
 
-.signup-container {
+.signup-container,
+.login-container {
   margin: 5% 0% 5% 0%;
   width: 90dvw;
   min-height: 70%;
@@ -321,7 +322,8 @@ h2 {
   min-height: 100%;
 }
 
-.signup-form {
+.signup-form,
+.login-form {
 
   border-radius: 24px;
 
@@ -385,7 +387,13 @@ label {
   color: white;
 }
 
-.signup-prompt {
+.submit-btn:hover {
+  transform: scale(1.025);
+  cursor: pointer;
+}
+
+.signup-prompt,
+.login-prompt {
   text-align: center;
   font-size: 2.5em;
   color: var(--accent-color);
