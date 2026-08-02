@@ -1,12 +1,9 @@
-export interface Note {
-    name: string,
-    pitch: string,
-    
-}
+export type NaturalNote = "C" | "D" | "E" | "F" | "G" | "A" | "B"
+export type AccidentalNote = `${NaturalNote}#` | `${NaturalNote}b`
 
 export interface Scale {
     name: string,
-    notes: Note[]
+    NaturalNotes: NaturalNote[]
 }
 
 export interface Interval {
@@ -16,6 +13,6 @@ export interface Interval {
 export interface Question {
     text: string,
     isAnswered: boolean,
-    options: Note[] | Scale[] | Interval,
-    answer: Note | Scale | Interval
+    options: NaturalNote[],
+    //answer: NaturalNote | Scale | Interval
 }
