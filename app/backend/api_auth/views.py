@@ -1,56 +1,81 @@
 from api.serializers import UserSerializer
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import APIView, api_view
 from rest_framework.response import Response
-from rest_framework import status
-
+from rest_framework import permissions, status, viewsets
+from .serializers import SignUpSerializer, UserSelfSerializer
 
 User = get_user_model()
 
-# Create your views here.
-@api_view(['POST'])
-def sign_up(request):
-    
-    if request.method != 'POST':
-        return Response(status.HTTP_400_BAD_REQUEST)
-    
-    serializer = UserSerializer(request.data)
-    if serializer.is_valid():
-        
-        new_user = User.objects.create_user(
-            username=request.data.get("username"),
-            email=request.data.get("email"),
-            password=request.data.get("password")
-        )
-        
-        serializer.save()
-        return Response(data=new_user, status=status.HTTP_201_CREATED)
-    
-    return Response(status.HTTP_400_BAD_REQUEST)
+# MODEL VIEWSETS
 
-@api_view(['POST'])
-def login(request):
+class UserAdminViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
     
-    if request.method != 'POST':
-        return Response(status.HTTP_400_BAD_REQUEST)
+# VIEWS
+
+class SignUpView(APIView):
+    permission_classes = [permissions.AllowAny]
     
-    serializer = UserSerializer(request.data)
+    def post(self, request):
+        serializer = SignUpSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            
+            user = serializer.create(validated_data=serializer.validated_data)
+            
+            return Response(UserSelfSerializer(user).data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    if serializer.is_valid():
+class LoginView(APIView):
+    
+    permission_classes = [permissions.AllowAny]
+    
+    def post(self, request):
         
-        username = request.data.get('username')
-        password = request.data.get('password')
+        serializer = UserSerializer(data=request.data)
         
-        user = authenticate(
-            username=username,
-            password=password
-        )
+        if serializer.is_valid():
         
+            username = request.data.get('username')
+            password = request.data.get('password')
+
+            user = authenticate(username=username, password=password)
+            
+            if user is None:
+                return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class MeView(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSelfSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        serializer = UserSelfSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def patch(self, request):
+        
+        user = request.user
         if user is not None:
-            login(request, user)
-            return Response(user, status.HTTP_200_OK)
+          
+            serializer = UserSelfSerializer(user, data=request.data, partial=True)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+    
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        else:
-            return Response(status.HTTP_401_UNAUTHORIZED)
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
