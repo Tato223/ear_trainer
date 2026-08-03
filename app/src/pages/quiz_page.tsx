@@ -27,21 +27,24 @@ export function QuizPageContent() {
     quizLogic.createPitchRecognitionQuestion(questionText),
   );
 
-  useEffect(() => {
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  const playNote = useEffect(() => {
     const synth = new tone.Synth().toDestination();
     synth.triggerAttackRelease(currentQuestion.correctAnswer + "4", noteLength);
 
     return () => {
       synth.dispose();
+      setIsPlaying(false)
     };
-  }, [currentQuestion]);
+  }, [currentQuestion, isPlaying]);
 
-  const [questionsCorrect, setQuestionsCorrect] = useState<number>(0)
+  const [questionsCorrect, setQuestionsCorrect] = useState<number>(0);
 
   const quizData = {
     correct: questionsCorrect,
-    numQuestions: maxQuestions
-  }
+    numQuestions: maxQuestions,
+  };
 
   // Return to quiz selection if max questions have been reached
   if (questionsCompleted > maxQuestions) {
@@ -49,9 +52,8 @@ export function QuizPageContent() {
   }
 
   function handleAnswer(selected: NaturalNote) {
-
     if (selected === currentQuestion.correctAnswer) {
-      setQuestionsCorrect(questionsCorrect + 1)
+      setQuestionsCorrect(questionsCorrect + 1);
     }
 
     setQuestionsCompleted(questionsCompleted + 1);
@@ -62,7 +64,7 @@ export function QuizPageContent() {
       selectedAnswer: selected,
     }));
 
-    nextQuestion()
+    nextQuestion();
   }
 
   /*
@@ -75,11 +77,28 @@ export function QuizPageContent() {
     setCurrentQuestion(quizLogic.createPitchRecognitionQuestion(questionText));
   }
 
+  function toggleIsPlaying() {
+    isPlaying? setIsPlaying(false) : setIsPlaying(true)
+  };
+
   return (
     <div className="content-container">
       <h2 className="quiz-text">{currentQuestion.text}</h2>
 
-      <div className="quiz-img-container"></div>
+      <div className="quiz-img-container" onClick={toggleIsPlaying}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#e3e3e3"
+        >
+          <path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124
+            28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440
+            40v-322q47 22 73.5 66t26.5 96q0 51-26.5
+            94.5T560-320ZM400-606l-86 86H200v80h114l86 86v-252ZM300-480Z" />
+        </svg>
+      </div>
 
       <div className="quiz-options-container">
         {currentQuestion.options.map((note) => (

@@ -421,6 +421,22 @@ label {
 
   align-self: center;
   background-color: var(--card-color);
+
+  border-radius: 14px;
+}
+
+.quiz-img-container > * {
+  min-height: 225px;
+  min-width: 225px;
+
+  max-height: 260px;
+  max-width: 260px;
+
+  color: black;
+}
+
+.quiz-img-container:hover {
+  cursor: pointer;
 }
 
 .quiz-options-container {
