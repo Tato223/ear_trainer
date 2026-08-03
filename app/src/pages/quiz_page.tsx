@@ -38,9 +38,14 @@ export function QuizPageContent() {
 
   const [questionsCorrect, setQuestionsCorrect] = useState<number>(0)
 
+  const quizData = {
+    correct: questionsCorrect,
+    numQuestions: maxQuestions
+  }
+
   // Return to quiz selection if max questions have been reached
   if (questionsCompleted > maxQuestions) {
-    return <Navigate to="/quizzes/complete" replace={true} />;
+    return <Navigate to="/quizzes/complete" replace={true} state={quizData} />;
   }
 
   function handleAnswer(selected: NaturalNote) {

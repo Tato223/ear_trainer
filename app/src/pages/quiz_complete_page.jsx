@@ -1,6 +1,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useLocation, useNavigate } from "react-router";
 
 export default function QuizCompletePage() {
   return (
@@ -12,8 +12,11 @@ export default function QuizCompletePage() {
   );
 }
 
-export function QuizCompleteContent(quizScore, totalQuestions, numCorrect) {
+export function QuizCompleteContent() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const quizData = location.state;
 
   const retryQuiz = () => {
     navigate("/quizzes/pitch_recognition");
@@ -30,10 +33,7 @@ export function QuizCompleteContent(quizScore, totalQuestions, numCorrect) {
         Select an option below to retry or select a new quiz.
       </h2>
 
-      <h3 className="quiz-score-text">Your Score: insert score here</h3>
-      <h3 className="correct-questions-text">
-        numcorrect out of totalquestions correct.
-      </h3>
+      <h3 className="quiz-score-text">Your Score: {(quizData.correct / quizData.numQuestions) * 100}%</h3>
 
       <div className="quiz-complete-btns-container">
         <button className="quiz-retry-btn" onClick={retryQuiz}>
