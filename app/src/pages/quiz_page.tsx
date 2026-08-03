@@ -40,7 +40,7 @@ export function QuizPageContent() {
 
   // Return to quiz selection if max questions have been reached
   if (questionsCompleted > maxQuestions) {
-    return <Navigate to="/quizzes/" replace={true} />;
+    return <Navigate to="/quizzes/complete" replace={true} />;
   }
 
   function handleAnswer(selected: NaturalNote) {

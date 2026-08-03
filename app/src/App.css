@@ -451,3 +451,47 @@ label {
   color: var(--secondary-color);
   cursor: pointer;
 }
+
+.quiz-completion-text {
+  text-align: center;
+  padding: 5% 0% 1% 0%;
+  font-size: 2em;
+}
+
+.quiz-completion-subtitle {
+  text-align: center;
+  padding: 0% 0% 2.5% 0%;
+  color: var(--subtitle-color);
+}
+
+.quiz-complete-btns-container {
+
+  align-self: center;
+  height: 30dvh;
+
+  display: flex;
+  width: 50%;
+  gap: 70px;
+  justify-content: center;
+  align-content: center;
+}
+
+.quiz-score-text, .correct-questions-text {
+  text-align: center;
+}
+
+.quiz-retry-btn, .quiz-return-btn {
+  height: 70px;
+  width: 200px;
+
+  padding: 1%;
+
+  align-self: center;
+  border-radius: 24px;
+  background-color: var(--accent-color);
+  font-size: 1.25em;
+  color: white;
+  border-style: solid;
+
+  cursor: pointer;
+}

@@ -16,11 +16,13 @@ import LibraryPage from './pages/nav_pages/library_page'
 import * as SignupPage from './pages/sign_up_page'
 import LoginPage from './pages/login_page'
 import QuizPage from './pages/quiz_page'
+import QuizCompletePage from './pages/quiz_complete_page'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
   {path: "/quizzes", element: <Quizzes/>},
   {path: "/quizzes/pitch_recognition", element: <QuizPage/>},
+  {path: "/quizzes/complete", element: <QuizCompletePage/>},
   {path: "/endless", element: <EndlessPage/>},
   {path: "/leaderboard", element: <LeaderboardPage/>},
   {path: "/library", element: <LibraryPage/>},
