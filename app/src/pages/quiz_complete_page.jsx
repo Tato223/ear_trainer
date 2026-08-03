@@ -26,6 +26,12 @@ export function QuizCompleteContent() {
     navigate("/quizzes");
   };
 
+  if (quizData === null) {
+    return(
+        <Navigate to="/quizzes/pitch_recognition/" replace/>
+    )
+  }
+
   return (
     <div className="content-container">
       <h1 className="quiz-completion-text">You have completed a quiz!</h1>
@@ -33,7 +39,7 @@ export function QuizCompleteContent() {
         Select an option below to retry or select a new quiz.
       </h2>
 
-      <h3 className="quiz-score-text">Your Score: {(quizData.correct / quizData.numQuestions) * 100}%</h3>
+      <h3 className="quiz-score-text">Your Score: {(quizData?.correct / quizData?.numQuestions) * 100}%</h3>
 
       <div className="quiz-complete-btns-container">
         <button className="quiz-retry-btn" onClick={retryQuiz}>
