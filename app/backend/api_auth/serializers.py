@@ -12,7 +12,7 @@ class UserAdminSerializer(serializers.ModelSerializer):
 class UserSelfSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['username', 'email']
         read_only_fields = ['id']
     
     

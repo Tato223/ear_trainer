@@ -44,7 +44,13 @@ body {
   margin: 0;
   padding: 0px;
   min-height: 100dvh;
-  scrollbar-width: auto;
+  scrollbar-width: none;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 header {
