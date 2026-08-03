@@ -1,5 +1,6 @@
-import Header from '../components/header'
-import Footer from '../components/footer'
+import Header from '../../components/header'
+import Footer from '../../components/footer'
+import { Navigate, replace, useNavigate } from 'react-router';
 
 export default function Quizzes(){
     return(
@@ -31,11 +32,17 @@ export function QuizzesContent() {
 }
 
 export function QuizCard(props) {
+
+    const navigate = useNavigate()
+    const startQuiz = () => {
+        navigate("/quizzes/pitch_recognition/", {replace: true})
+    }
+
     return (
         <div className="quiz-card">
             <h3 className="quiz-card__title">{props.name}</h3>
             <p className="quiz-card__text">{props.text}</p>
-            <button className="quiz-card__button">Select &rarr;</button>
+            <button className="quiz-card__button" onClick={startQuiz}>Select &rarr;</button>
         </div>
     );
 }
