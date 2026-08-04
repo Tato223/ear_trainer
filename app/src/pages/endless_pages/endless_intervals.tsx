@@ -1,58 +1,61 @@
 import Header from "../../components/header.jsx";
 import Footer from "../../components/footer.jsx";
 import * as quizLogic from "../../quiz_logic.ts";
-import { PitchRecognitionQuestion, NaturalNote } from "../../types.ts";
+import { Note, IntervalQuestion, interval } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const noteLength = "4n"; //Quarter note
+const delayBetweenNotes = 0.75;
 
-export default function EndlessQuizPage() {
+export default function EndlessIntervalsPage() {
   return (
     <>
       <Header />
-      <EndlessQuizPageContent />
+      <EndlessIntervalsContent />
       <Footer />
     </>
   );
 }
 
-export function EndlessQuizPageContent() {
+export function EndlessIntervalsContent() {
   let questionText = "Select an answer choice to identify the note.";
 
   const [currentQuestion, setCurrentQuestion] =
-    useState<PitchRecognitionQuestion>(() =>
-      quizLogic.createPitchRecognitionQuestion(questionText),
+    useState<IntervalQuestion>(() =>
+      quizLogic.createIntervalQuestion(questionText),
     );
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const navigate = useNavigate()
 
   const playNote = useEffect(() => {
-    const synth = new tone.Synth().toDestination();
-    synth.triggerAttackRelease(
-      currentQuestion.correctAnswer + "4",
-      noteLength,
-    );
-
-    return () => {
-      synth.dispose();
-      setIsPlaying(false);
-    };
-  }, [currentQuestion, isPlaying]);
+      const synth = new tone.Synth().toDestination();
+      const intervalNotes: Note[] = currentQuestion.intervalNotes
+  
+      intervalNotes.forEach((note, index) => {
+          const scheduledTime = tone.now() + index * delayBetweenNotes;
+          synth.triggerAttackRelease(`${note}${currentQuestion.correctAnswer !== 7 ? 4 : 5}`, noteLength, scheduledTime)
+      })
+  
+      return () => {
+        synth.dispose();
+        setIsPlaying(false)
+      };
+    }, [currentQuestion, isPlaying]);
 
   const [questionsCorrect, setQuestionsCorrect] =
     useState<number>(0);
 
   const quizData = {
     correct: questionsCorrect,
-    quizEndpoint: "/pitch_recognition",
+    quizEndpoint: "/intervals",
   };
 
-  function handleAnswer(selected: NaturalNote): void {
+  function handleAnswer(selected: interval): void {
 
-    const isAnswerCorrect: boolean = (selected == currentQuestion.correctAnswer)
+    const isAnswerCorrect: boolean = (selected.toString() == currentQuestion.correctAnswer)
 
     // end quiz if an answer is correct
     if (!isAnswerCorrect) {
@@ -70,7 +73,7 @@ export function EndlessQuizPageContent() {
         selectedAnswer: selected,
       }));
 
-      nextPitchRecognitionQuestion();
+      nextQuestion();
     }
   }
 
@@ -80,9 +83,9 @@ export function EndlessQuizPageContent() {
   }
   */
 
-  function nextPitchRecognitionQuestion() {
+  function nextQuestion() {
     setCurrentQuestion(
-      quizLogic.createPitchRecognitionQuestion(questionText),
+      quizLogic.createIntervalQuestion(questionText),
     );
   }
 
@@ -112,13 +115,13 @@ export function EndlessQuizPageContent() {
       </div>
 
       <div className="quiz-options-container">
-        {currentQuestion.options.map((note) => (
+        {currentQuestion.options.map((interval) => (
           <button
-            key={note}
+            key={interval.toString()}
             className="quiz-option-btn"
-            onClick={() => handleAnswer(note)}
+            onClick={() => handleAnswer(interval)}
           >
-            {note}
+            {interval.toString()}
           </button>
         ))}
       </div>

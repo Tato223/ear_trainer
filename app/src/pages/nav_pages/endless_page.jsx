@@ -22,7 +22,7 @@ export function EndlessContent () {
                 <EndlessCard name="Pitch Recognition" quizEndpoint="pitch_recognition" text="Match the audio with the correct note."/>
                 <EndlessCard name="Intonation Test" text="Recognize whether a note is sharp, flat, or natural."/>
                 <EndlessCard name="Major Scales" quizEndpoint="major_scales" text="Identify the major scale based on the audio."/>
-                <EndlessCard name="Intervals" text="Select the interval between two notes"/>
+                <EndlessCard name="Intervals" quizEndpoint="intervals" text="Select the interval between two notes"/>
             </div>
         </div>
     );
