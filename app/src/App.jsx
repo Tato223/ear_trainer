@@ -15,13 +15,15 @@ import LeaderboardPage from './pages/nav_pages/leaderboard_page'
 import LibraryPage from './pages/nav_pages/library_page'
 import * as SignupPage from './pages/sign_up_page'
 import LoginPage from './pages/login_page'
-import QuizPage from './pages/quiz_page'
+import QuizPage from './pages/quizzes/quiz_page'
+import ScaleQuizPage from './pages/quizzes/scale_quiz_page'
 import QuizCompletePage from './pages/quiz_complete_page'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
   {path: "/quizzes", element: <Quizzes/>},
   {path: "/quizzes/pitch_recognition", element: <QuizPage/>},
+  {path: "/quizzes/major_scales", element: <ScaleQuizPage/>},
   {path: "/quizzes/complete", element: <QuizCompletePage/>},
   {path: "/endless", element: <EndlessPage/>},
   {path: "/leaderboard", element: <LeaderboardPage/>},

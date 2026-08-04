@@ -2,46 +2,69 @@ import {
   NaturalNote,
   Interval,
   Scale,
-  Question,
+  PitchRecognitionQuestion,
+  MajorScaleQuestion,
   AccidentalNote,
+  Note,
+  scales
 } from "./types";
 
-import * as Tone from "tone";
-
-export function createPitchRecognitionQuestion(text: string): Question {
+export function createPitchRecognitionQuestion(text: string): PitchRecognitionQuestion {
 
   const options = generateOptionsArr()
   const correctAnswer = getCorrectNote(options)
 
-  const question: Question = {
+  const question: PitchRecognitionQuestion = {
     text: text,
-    options,
+    options: options,
     isAnswered: false,
-    correctAnswer,
+    correctAnswer: correctAnswer,
     selectedAnswer: null
   };
 
   return question;
 }
 
-export function createPitchRecognitionQuiz(numQuestions: number) {
+export function createMajorScaleQuestion(text: string): MajorScaleQuestion {
+  
+  const options = generateMajorScaleOptionsArr()
+  const correctAnswer = getCorrectScale(options)
 
-  for (let i = 0; i < numQuestions; i++) {
-    let questionNumber = i + 1;
-    let currQuestion = createPitchRecognitionQuestion("text");
-    let answer = currQuestion.correctAnswer;
-    playNaturalNote(answer);
-/*
-    console.log(`Question #${questionNumber}:`)
-    console.log(`Answer Choices: ${currQuestion.options}`)
-    console.log(`Correct Answer: ${answer}`)
-    */
+  const question: MajorScaleQuestion = {
+    text: text,
+    options: options,
+    isAnswered: false,
+    correctAnswer: correctAnswer,
+    selectedAnswer: null
   }
+
+  return question;
 }
 
 function getCorrectNote(options: NaturalNote[]): NaturalNote {
-  const answerIndex = Math.floor(Math.random() * 4);
+  const answerIndex = Math.floor(Math.random() * options.length);
   return options[answerIndex];
+}
+
+function getCorrectScale(options: Scale[]): Scale {
+  const answerIndex = Math.floor(Math.random() * options.length)
+  return options[answerIndex]
+}
+
+function generateMajorScaleOptionsArr(): Scale[] {
+  const options: Scale[] = [];
+  let possibleScales: Scale[] = [...scales]
+
+  for (let i = 0; i < 4; i++) {
+    let randomIndex = Math.floor(Math.random() * possibleScales.length);
+    let newScale: Scale = possibleScales[randomIndex];
+
+    possibleScales.splice(randomIndex, 1);
+
+    options.push(newScale);
+  }
+
+  return options;
 }
 
 function generateOptionsArr(): NaturalNote[] {
@@ -59,15 +82,4 @@ function generateOptionsArr(): NaturalNote[] {
 
   // console.log(options);
   return options;
-}
-
-function playNaturalNote(note: NaturalNote) {
-  const synth = new Tone.Synth().toDestination();
-
-  synth.triggerAttackRelease(note, "4n");
-}
-
-function startQuiz() {
-  setTimeout(createPitchRecognitionQuiz, 5)
-  createPitchRecognitionQuiz(10)
 }

@@ -1,6 +1,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
-import { Navigate, useLocation, useNavigate } from "react-router";
+import { Await, Navigate, useLocation, useNavigate } from "react-router";
 
 export default function QuizCompletePage() {
   return (
@@ -18,19 +18,17 @@ export function QuizCompleteContent() {
 
   const quizData = location.state;
 
+  if (quizData === null) {
+    return <Navigate to="/quizzes/" replace />;
+  }
+
   const retryQuiz = () => {
-    navigate("/quizzes/pitch_recognition");
+    navigate(`/quizzes/${quizData?.quizEndpoint}/`);
   };
 
   const returnToQuizSelect = () => {
     navigate("/quizzes");
   };
-
-  if (quizData === null) {
-    return(
-        <Navigate to="/quizzes/pitch_recognition/" replace/>
-    )
-  }
 
   return (
     <div className="content-container">
@@ -39,7 +37,9 @@ export function QuizCompleteContent() {
         Select an option below to retry or select a new quiz.
       </h2>
 
-      <h3 className="quiz-score-text">Your Score: {(quizData?.correct / quizData?.numQuestions) * 100}%</h3>
+      <h3 className="quiz-score-text">
+        Your Score: {(quizData?.correct / quizData?.numQuestions) * 100}%
+      </h3>
 
       <div className="quiz-complete-btns-container">
         <button className="quiz-retry-btn" onClick={retryQuiz}>

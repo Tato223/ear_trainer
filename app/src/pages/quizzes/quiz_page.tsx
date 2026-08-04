@@ -1,12 +1,12 @@
-import Header from "../components/header.jsx";
-import Footer from "../components/footer.jsx";
-import * as quizLogic from "../quiz_logic.ts";
-import { Question, NaturalNote, octave } from "../types";
+import Header from "../../components/header.jsx";
+import Footer from "../../components/footer.jsx";
+import * as quizLogic from "../../quiz_logic.ts";
+import { PitchRecognitionQuestion, NaturalNote, octave } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
 
-const maxQuestions = 10;
+const maxPitchRecognitionQuestions = 10;
 const noteLength = "4n"; //Quarter note
 
 export default function QuizPage() {
@@ -21,9 +21,9 @@ export default function QuizPage() {
 
 export function QuizPageContent() {
   let questionText = "Select an answer choice to identify the note.";
-  const [questionsCompleted, setQuestionsCompleted] = useState<number>(1);
+  const [questionsCompleted, setPitchRecognitionQuestionsCompleted] = useState<number>(1);
 
-  const [currentQuestion, setCurrentQuestion] = useState<Question>(() =>
+  const [currentPitchRecognitionQuestion, setCurrentPitchRecognitionQuestion] = useState<PitchRecognitionQuestion>(() =>
     quizLogic.createPitchRecognitionQuestion(questionText),
   );
 
@@ -31,40 +31,41 @@ export function QuizPageContent() {
 
   const playNote = useEffect(() => {
     const synth = new tone.Synth().toDestination();
-    synth.triggerAttackRelease(currentQuestion.correctAnswer + "4", noteLength);
+    synth.triggerAttackRelease(currentPitchRecognitionQuestion.correctAnswer + "4", noteLength);
 
     return () => {
       synth.dispose();
       setIsPlaying(false)
     };
-  }, [currentQuestion, isPlaying]);
+  }, [currentPitchRecognitionQuestion, isPlaying]);
 
-  const [questionsCorrect, setQuestionsCorrect] = useState<number>(0);
+  const [questionsCorrect, setPitchRecognitionQuestionsCorrect] = useState<number>(0);
 
   const quizData = {
     correct: questionsCorrect,
-    numQuestions: maxQuestions,
+    numQuestions: maxPitchRecognitionQuestions,
+    quizEndpoint: "/pitch_recognition"
   };
 
-  // Return to quiz selection if max questions have been reached
-  if (questionsCompleted > maxQuestions) {
+  // Navigate to complete page if max questions have been reached
+  if (questionsCompleted > maxPitchRecognitionQuestions) {
     return <Navigate to="/quizzes/complete" replace={true} state={quizData} />;
   }
 
   function handleAnswer(selected: NaturalNote) {
-    if (selected === currentQuestion.correctAnswer) {
-      setQuestionsCorrect(questionsCorrect + 1);
+    if (selected === currentPitchRecognitionQuestion.correctAnswer) {
+      setPitchRecognitionQuestionsCorrect(questionsCorrect + 1);
     }
 
-    setQuestionsCompleted(questionsCompleted + 1);
+    setPitchRecognitionQuestionsCompleted(questionsCompleted + 1);
 
-    setCurrentQuestion((prev) => ({
+    setCurrentPitchRecognitionQuestion((prev) => ({
       ...prev,
       isAnswered: true,
       selectedAnswer: selected,
     }));
 
-    nextQuestion();
+    nextPitchRecognitionQuestion();
   }
 
   /*
@@ -73,8 +74,8 @@ export function QuizPageContent() {
   }
   */
 
-  function nextQuestion() {
-    setCurrentQuestion(quizLogic.createPitchRecognitionQuestion(questionText));
+  function nextPitchRecognitionQuestion() {
+    setCurrentPitchRecognitionQuestion(quizLogic.createPitchRecognitionQuestion(questionText));
   }
 
   function toggleIsPlaying() {
@@ -83,7 +84,7 @@ export function QuizPageContent() {
 
   return (
     <div className="content-container">
-      <h2 className="quiz-text">{currentQuestion.text}</h2>
+      <h2 className="quiz-text">{currentPitchRecognitionQuestion.text}</h2>
 
       <div className="quiz-img-container" onClick={toggleIsPlaying}>
         <svg
@@ -101,7 +102,7 @@ export function QuizPageContent() {
       </div>
 
       <div className="quiz-options-container">
-        {currentQuestion.options.map((note) => (
+        {currentPitchRecognitionQuestion.options.map((note) => (
           <button
             key={note}
             className="quiz-option-btn"
