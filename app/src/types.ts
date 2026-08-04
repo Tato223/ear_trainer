@@ -1,7 +1,10 @@
+import { interval } from "tonal"
+
 export type NaturalNote = "C" | "D" | "E" | "F" | "G" | "A" | "B"
 export type AccidentalNote = `${NaturalNote}#` | `${NaturalNote}b`
 export type Note = NaturalNote | AccidentalNote
 export type octave = 1 | 2 | 3 | 4 | 5 | 6 | 7
+export type interval = 2 | 4 | 5 | 7
 
 export interface Scale {
     Name: string,
@@ -10,6 +13,14 @@ export interface Scale {
 
 export interface Interval {
     value: number
+}
+
+export interface IntervalQuestion {
+    text: string,
+    isAnswered: boolean,
+    options: interval[],
+    correctAnswer: interval | string,
+    selectedAnswwer: interval | null
 }
 
 export interface PitchRecognitionQuestion {
