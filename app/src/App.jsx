@@ -20,6 +20,7 @@ import QuizPage from './pages/quizzes/quiz_page'
 import ScaleQuizPage from './pages/quizzes/scale_quiz_page'
 import QuizCompletePage from './pages/quiz_complete_page'
 import EndlessCompletePage from './pages/endless_pages/endless_complete_page'
+import EndlessScalesPage from './pages/endless_pages/endless_major_scales'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
   {path: "/quizzes/complete", element: <QuizCompletePage/>},
   {path: "/endless", element: <EndlessPage/>},
   {path: "/endless/pitch_recognition", element: <EndlessQuizPage/>},
+  {path: "/endless/major_scales", element: <EndlessScalesPage/>},
   {path: "/endless/complete", element: <EndlessCompletePage/>},
   {path: "/leaderboard", element: <LeaderboardPage/>},
   {path: "/library", element: <LibraryPage/>},
