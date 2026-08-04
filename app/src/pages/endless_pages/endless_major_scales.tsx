@@ -31,7 +31,6 @@ export function EndlessScalesPageContent() {
 
   const playScale = useEffect(() => {
       const synth = new tone.Synth().toDestination();
-      currentQuestion.correctAnswer.Notes;
   
       currentQuestion.correctAnswer.Notes.forEach((note, index) => {
         const scheduledTime = tone.now() + index * 0.25;
