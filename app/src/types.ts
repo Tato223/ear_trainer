@@ -5,6 +5,7 @@ export type AccidentalNote = `${NaturalNote}#` | `${NaturalNote}b`;
 export type Note = NaturalNote | AccidentalNote;
 export type octave = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type interval = 2 | 4 | 5 | 7; // basic intervals for simplicity, expansion possible in the future
+export const orderedNotes: Note[] = ["C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"] 
 
 export interface Scale {
   Name: string;
