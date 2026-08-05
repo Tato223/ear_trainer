@@ -54,7 +54,6 @@ export function ScaleQuizPageContent() {
     const seenNotes: Note[] = [];
 
     correctScaleNotes.forEach((note, index) => {
-      console.log(note);
 
       let octave = defaultOctave;
       let currOrderedIndex = orderedNotes.indexOf(note);
@@ -65,6 +64,7 @@ export function ScaleQuizPageContent() {
         seenNotes.includes(note)
       ) {
         octave++;
+        
       } else {
         octave = defaultOctave;
       }

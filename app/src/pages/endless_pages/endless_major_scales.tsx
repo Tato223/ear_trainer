@@ -1,12 +1,14 @@
 import Header from "../../components/header.jsx";
 import Footer from "../../components/footer.jsx";
 import * as quizLogic from "../../quiz_logic.ts";
-import { Scale, MajorScaleQuestion } from "../../types.ts";
+import { Scale, MajorScaleQuestion, Note, orderedNotes } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { useNavigate } from "react-router";
 
-const noteLength = "8n"; //Quarter note
+const noteLength = "8n"; //Eighth note
+const defaultOctave = 3;
+const indexOfBb = 15;
 
 export default function EndlessScalesPage() {
   return (
@@ -30,11 +32,41 @@ export function EndlessScalesPageContent() {
   const navigate = useNavigate()
 
   const playScale = useEffect(() => {
+    
       const synth = new tone.Synth().toDestination();
+      const correctScaleNotes: Note[] = currentQuestion.correctAnswer.Notes;
   
-      currentQuestion.correctAnswer.Notes.forEach((note, index) => {
+      let prevOrderedIndex: number | null = null;
+      const seenBorBb: Note[] = [];
+      const seenNotes: Note[] = [];
+  
+      correctScaleNotes.forEach((note, index) => {
+  
+        let octave = defaultOctave;
+        let currOrderedIndex = orderedNotes.indexOf(note);
+  
+        if (
+          (prevOrderedIndex && currOrderedIndex < prevOrderedIndex) ||
+          (currOrderedIndex < indexOfBb && seenBorBb.length > 0) ||
+          seenNotes.includes(note)
+        ) {
+          octave++;
+          
+        } else {
+          octave = defaultOctave;
+        }
+  
+        prevOrderedIndex = currOrderedIndex;
+  
         const scheduledTime = tone.now() + index * 0.25;
-        synth.triggerAttackRelease(`${note}4`, noteLength, scheduledTime);
+  
+        synth.triggerAttackRelease(`${note}${octave}`, noteLength, scheduledTime);
+  
+        if (note === "B" || note === "Bb") {
+          seenBorBb.push(note);
+        }
+  
+        seenNotes.push(note);
       });
   
       return () => {
