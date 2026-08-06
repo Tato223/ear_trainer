@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 function FormBlock(props) {
     return(
         <div className="form-block">
-            <label for="#form-entry">{props.label}</label>
+            <label htmlFor="#form-entry">{props.label}</label>
             <input id={props.id} type={props.type} min={props.min} max={props.max} required={props.isRequired} placeholder={props.placeholder}></input>
         </div>
     );

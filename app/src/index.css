@@ -135,7 +135,7 @@ a {
 .content-container {
   padding: 2.5% 0% 5% 0%;
   background-color: var(--background-color);
-  min-height: max-content + 5%;
+  min-height: max-content + 5dvh;
   width: 100%;
 
   display: flex;
