@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export default function FormBlock(props) {
+function FormBlock(props) {
     return(
         <div className="form-block">
             <label for="#form-entry">{props.label}</label>
@@ -18,3 +18,5 @@ FormBlock.propTypes = {
     isRequired: PropTypes.bool,
     placeholder: PropTypes.string
 };
+
+export default FormBlock

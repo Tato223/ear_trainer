@@ -1,7 +1,7 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import FormBlock from "../components/form_block";
-import { Form } from "react-router";
+import { Form , Link } from "react-router";
 
 export default function SignupPage() {
   return (
@@ -14,15 +14,6 @@ export default function SignupPage() {
 }
 
 export function SignupContent() {
-
-  /* props = [
-    "label",
-    "text",
-    "id",
-    "max",
-    "min",
-    "placeholder"
-  ] */
 
   return (
     <div className="content-container">
@@ -37,6 +28,11 @@ export function SignupContent() {
           <FormBlock label="Email" id="email-entry" type="email" min={3} max={12} isRequired={true} placeholder="Ex. yourEmail321@domain.com"/>
 
           <input className="submit-btn" type="submit" />
+
+          <p className="signup-redirect">Already have an account? 
+            <Link className="signup-redirect__link" to="/auth/login"> Log in</Link>
+          </p>
+
         </form>
       </div>
     </div>

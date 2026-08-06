@@ -316,14 +316,16 @@ h2 {
 
 .signup-container,
 .login-container {
-  margin: 5% 0% 5% 0%;
+  margin: 0% 0% 5% 0%;
   width: 90dvw;
-  min-height: 70%;
-  max-height: 90%;
+  min-height: 50%;
+  max-height: 80%;
   display: flex;
   justify-content: center;
   align-content: center;
   min-height: 100%;
+
+  align-self: center;
 }
 
 .signup-form,
@@ -338,7 +340,7 @@ h2 {
 
   display: flex;
   flex-direction: column;
-  padding: 5%;
+  padding: 2.5%;
 
   background-color: var(--card-color);
 
@@ -354,7 +356,8 @@ h2 {
 }
 
 .form-block > input::placeholder {
-  color: var(--secondary-color)
+  color: var(--secondary-color);
+  opacity: 50%;
 }
 
 
@@ -376,7 +379,7 @@ label {
   padding: 8px;
   background-color: var(--card-color);
 
-  color: white;
+  color: var(--secondary-color);
 }
 
 .submit-btn {
@@ -401,6 +404,24 @@ label {
   text-align: center;
   font-size: 2.5em;
   color: var(--accent-color);
+}
+
+.signup-redirect {
+  color: var(--secondary-color);
+}
+
+.signup-redirect, .signup-redirect > a {
+  text-align: center;
+}
+
+.signup-redirect > a {
+  color: var(--accent-color);
+}
+
+.signup-redirect > a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: bold;
 }
 
 .quizpage-content {

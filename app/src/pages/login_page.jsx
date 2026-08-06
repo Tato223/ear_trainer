@@ -2,7 +2,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import FormBlock from "../components/form_block";
 import PropTypes from "prop-types";
-import { Form } from "react-router";
+import { Form, Link } from "react-router";
 
 export default function LoginPage() {
   return (
@@ -28,6 +28,11 @@ export function LoginContent() {
           <FormBlock label="Password" id="password-entry" type="password" min={3} max={12} isRequired={true} placeholder="Ex. MyPassword123"/>
 
           <input className="submit-btn" type="submit" />
+
+          <p className="signup-redirect">Don't have an account? 
+            <Link className="signup-redirect__link" to="/auth/signup"> Sign up</Link>
+          </p>
+
         </form>
       </div>
     </div>

@@ -12,7 +12,10 @@ import { Link } from "react-router";
 - PRIVACY POLICY & TOS
 */
 
-function Header({isLoggedIn=true}) {
+function Header({isLoggedIn=false}) {
+
+
+
     return (
         <header>
             <Link to="/">
@@ -26,9 +29,9 @@ function Header({isLoggedIn=true}) {
                     <Link to="/leaderboard">Leaderboard</Link>
                     <Link to="/library">Library</Link>
 
-                    <div>
                         {isLoggedIn ? 
 
+                        // change to /me later
                         (<Link to="/auth/login">
                             <img className="user-pfp__header" src="https://placehold.co/40"/>
                         </Link>) :
@@ -38,8 +41,6 @@ function Header({isLoggedIn=true}) {
                         </Link>)
 
                         }   
-
-                    </div>
 
                 </ul>
             </nav>
