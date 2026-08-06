@@ -1,13 +1,20 @@
 import Header from "../../components/header.jsx";
 import Footer from "../../components/footer.jsx";
 import * as quizLogic from "../../quiz_logic.ts";
-import { Note, IntervalQuestion, interval } from "../../types.ts";
+import {
+  Note,
+  IntervalQuestion,
+  interval,
+  octave,
+  orderedNotes,
+} from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { useNavigate } from "react-router";
 
 const noteLength = "4n"; //Quarter note
 const delayBetweenNotes = 0.75;
+const defaultOctave: octave = 3;
 
 export default function EndlessIntervalsPage() {
   return (
@@ -22,32 +29,40 @@ export default function EndlessIntervalsPage() {
 export function EndlessIntervalsContent() {
   let questionText = "Select an answer choice to identify the note.";
 
-  const [currentQuestion, setCurrentQuestion] =
-    useState<IntervalQuestion>(() =>
-      quizLogic.createIntervalQuestion(questionText),
-    );
+  const [currentQuestion, setCurrentQuestion] = useState<IntervalQuestion>(() =>
+    quizLogic.createIntervalQuestion(questionText),
+  );
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // play scale notes
   useEffect(() => {
-      const synth = new tone.Synth().toDestination();
-      const intervalNotes: Note[] = currentQuestion.intervalNotes
-  
-      intervalNotes.forEach((note, index) => {
-          const scheduledTime = tone.now() + index * delayBetweenNotes;
-          synth.triggerAttackRelease(`${note}${currentQuestion.correctAnswer !== 7 ? 4 : 5}`, noteLength, scheduledTime)
-      })
-  
-      return () => {
-        synth.dispose();
-        setIsPlaying(false)
-      };
-    }, [currentQuestion, isPlaying]);
+    const synth = new tone.Synth().toDestination();
+    const intervalNotes: Note[] = currentQuestion.intervalNotes;
+    let octave: octave = defaultOctave;
+    let prevOrderedIndex: null | number = null;
 
-  const [questionsCorrect, setQuestionsCorrect] =
-    useState<number>(0);
+    // Play each note of the interval. Ensure the second note is always a higher pitch
+    intervalNotes.forEach((note, index) => {
+
+      let currOrderedIndex = orderedNotes.indexOf(note);
+      prevOrderedIndex && currOrderedIndex < prevOrderedIndex ? octave++ : null;
+
+      const scheduledTime = tone.now() + index * delayBetweenNotes;
+      synth.triggerAttackRelease(`${note}${octave}`, noteLength, scheduledTime);
+
+      prevOrderedIndex = currOrderedIndex;
+      
+    });
+
+    return () => {
+      synth.dispose();
+      setIsPlaying(false);
+    };
+  }, [currentQuestion, isPlaying]);
+
+  const [questionsCorrect, setQuestionsCorrect] = useState<number>(0);
 
   const quizData = {
     correct: questionsCorrect,
@@ -55,13 +70,13 @@ export function EndlessIntervalsContent() {
   };
 
   function handleAnswer(selected: interval): void {
-
-    const isAnswerCorrect: boolean = (selected.toString() == currentQuestion.correctAnswer)
+    const isAnswerCorrect: boolean =
+      selected.toString() == currentQuestion.correctAnswer;
 
     // end quiz if an answer is correct
     if (!isAnswerCorrect) {
-        navigate("/endless/complete", {replace: true, state: quizData})
-        return;
+      navigate("/endless/complete", { replace: true, state: quizData });
+      return;
     }
 
     // count correct answers
@@ -79,9 +94,7 @@ export function EndlessIntervalsContent() {
   }
 
   function nextQuestion() {
-    setCurrentQuestion(
-      quizLogic.createIntervalQuestion(questionText),
-    );
+    setCurrentQuestion(quizLogic.createIntervalQuestion(questionText));
   }
 
   function toggleIsPlaying() {

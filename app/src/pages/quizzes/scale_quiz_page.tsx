@@ -1,14 +1,14 @@
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import * as quizLogic from "../../quiz_logic.ts";
-import { Scale, MajorScaleQuestion, orderedNotes, Note } from "../../types.ts";
+import { Scale, MajorScaleQuestion, orderedNotes, Note, octave } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
 
 const maxQuestions = 10;
 const noteLength = "8n"; //Eighth note
-const defaultOctave = 3;
+const defaultOctave: octave = 3;
 const indexOfBb = 15;
 
 export default function ScaleQuizPage() {

@@ -1,14 +1,14 @@
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import * as quizLogic from "../../quiz_logic.ts";
-import { PitchModifier, IntonationQuestion } from "../../types.ts";
+import { PitchModifier, IntonationQuestion, octave } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { useNavigate } from "react-router";
 
 const maxQuestions = 10;
 const noteLength = "4n"; //Quarter note
-const defaultOctave = 3;
+const defaultOctave: octave = 3;
 
 export default function EndlessIntonationPage() {
   return (

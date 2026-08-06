@@ -1,7 +1,7 @@
 import Header from "../../components/header.jsx";
 import Footer from "../../components/footer.jsx";
 import * as quizLogic from "../../quiz_logic.ts";
-import { Note, interval, IntervalQuestion } from "../../types.ts";
+import { Note, interval, IntervalQuestion , orderedNotes, octave} from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
@@ -9,6 +9,7 @@ import { Navigate } from "react-router";
 const maxQuestions = 10;
 const noteLength = "4n"; //Quarter note
 const delayBetweenNotes = .75;
+const defaultOctave: octave = 3;
 
 export default function IntervalQuizPage() {
   return (
@@ -32,19 +33,29 @@ export function IntervalQuizContent() {
 
   // play interval notes
   useEffect(() => {
-    const synth = new tone.Synth().toDestination();
-    const intervalNotes: Note[] = currentQuestion.intervalNotes
-
-    intervalNotes.forEach((note, index) => {
+      const synth = new tone.Synth().toDestination();
+      const intervalNotes: Note[] = currentQuestion.intervalNotes;
+      let octave: octave = defaultOctave;
+      let prevOrderedIndex: null | number = null;
+  
+      // Play each note of the interval. Ensure the second note is always a higher pitch
+      intervalNotes.forEach((note, index) => {
+  
+        let currOrderedIndex = orderedNotes.indexOf(note);
+        prevOrderedIndex && currOrderedIndex < prevOrderedIndex ? octave++ : null;
+  
         const scheduledTime = tone.now() + index * delayBetweenNotes;
-        synth.triggerAttackRelease(`${note}${currentQuestion.correctAnswer !== 7 ? 4 : 5}`, noteLength, scheduledTime)
-    })
-
-    return () => {
-      synth.dispose();
-      setIsPlaying(false)
-    };
-  }, [currentQuestion, isPlaying]);
+        synth.triggerAttackRelease(`${note}${octave}`, noteLength, scheduledTime);
+  
+        prevOrderedIndex = currOrderedIndex;
+        
+      });
+  
+      return () => {
+        synth.dispose();
+        setIsPlaying(false);
+      };
+    }, [currentQuestion, isPlaying]);
 
   const [questionsCorrect, setPitchRecognitionQuestionsCorrect] = useState<number>(0);
 
