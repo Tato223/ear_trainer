@@ -1,86 +1,56 @@
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import * as quizLogic from "../../quiz_logic.ts";
-import { Scale, MajorScaleQuestion, orderedNotes, Note } from "../../types.ts";
+import { PitchModifier, IntonationQuestion } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
 
 const maxQuestions = 10;
-const noteLength = "8n"; //Eighth note
+const noteLength = "4n"; //Quarter note
 const defaultOctave = 3;
-const indexOfBb = 15;
 
-export default function ScaleQuizPage() {
+export default function IntonationQuizPage() {
   return (
     <>
       <Header />
-      <ScaleQuizPageContent />
+      <IntonationQuizContent />
       <Footer />
     </>
   );
 }
 
-export function ScaleQuizPageContent() {
-
+export function IntonationQuizContent() {
   const questionText = "Select an answer choice to identify the major scale.";
   const [questionsCompleted, setQuestionsCompleted] = useState<number>(1);
 
-  const [currentQuestion, setCurrentQuestion] = useState<MajorScaleQuestion>(
-    () => quizLogic.createMajorScaleQuestion(questionText),
+  const [currentQuestion, setCurrentQuestion] = useState<IntonationQuestion>(
+    () => quizLogic.createIntonationQuestion(questionText),
   );
+
+  currentQuestion.text = `The intended note is ${currentQuestion.noteToPlay}. Determine whether it is Sharp, Flat, or In Tune.`
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  // Play scale notes
+  //play note
   useEffect(() => {
     const synth = new tone.Synth().toDestination();
-    const correctScaleNotes: Note[] = currentQuestion.correctAnswer.Notes;
 
-    /*
-    1. Store the current note's index in orderedNotes as currOrderedIndex
-    2. Compare currOrderedIndex to prev ordered index (if any)
-    3. if currOrderedIndex < prevOrderedIndex -> raise the octave for all future notes
+    // Determines how to adjust the pitch depending on the correct answer
+    let modifier = 0;
+    if (currentQuestion.correctAnswer === "Flat") {
+      modifier = -40;
+    } else if (currentQuestion.correctAnswer === "Sharp") {
+      modifier = +40;
+    }
 
-    problem: Inside a for each loop, How can I preserve a value from past iterations?
+    //adjust the pitch using the modifier
+    synth.detune.value = modifier
 
-    Solution: Check whether a note has been visited, if B or Bb has been visited,
-    and if the current index is less than Bb's index in the static orderNotes array.
-    If so, raise the octave by one.
-    */
-
-    let prevOrderedIndex: number | null = null;
-    const seenBorBb: Note[] = [];
-    const seenNotes: Note[] = [];
-
-    correctScaleNotes.forEach((note, index) => {
-
-      let octave = defaultOctave;
-      let currOrderedIndex = orderedNotes.indexOf(note);
-
-      if (
-        (prevOrderedIndex && currOrderedIndex < prevOrderedIndex) ||
-        (currOrderedIndex < indexOfBb && seenBorBb.length > 0) ||
-        seenNotes.includes(note)
-      ) {
-        octave++;
-
-      } else {
-        octave = defaultOctave;
-      }
-
-      prevOrderedIndex = currOrderedIndex;
-
-      const scheduledTime = tone.now() + index * 0.25;
-
-      synth.triggerAttackRelease(`${note}${octave}`, noteLength, scheduledTime);
-
-      if (note === "B" || note === "Bb") {
-        seenBorBb.push(note);
-      }
-
-      seenNotes.push(note);
-    });
+    synth.triggerAttackRelease(
+      currentQuestion.noteToPlay + defaultOctave,
+      noteLength,
+    );
 
     return () => {
       synth.dispose();
@@ -93,7 +63,7 @@ export function ScaleQuizPageContent() {
   const quizData = {
     correct: questionsCorrect,
     numQuestions: maxQuestions,
-    quizEndpoint: "/major_scales/",
+    quizEndpoint: "/intonation/",
   };
 
   // Return to quiz selection if max questions have been reached
@@ -101,7 +71,7 @@ export function ScaleQuizPageContent() {
     return <Navigate to="/quizzes/complete" replace={true} state={quizData} />;
   }
 
-  function handleAnswer(selected: Scale) {
+  function handleAnswer(selected: PitchModifier) {
     if (selected === currentQuestion.correctAnswer) {
       setQuestionsCorrect(questionsCorrect + 1);
     }
@@ -116,9 +86,9 @@ export function ScaleQuizPageContent() {
 
     nextQuestion();
   }
-  
+
   function nextQuestion() {
-    setCurrentQuestion(quizLogic.createMajorScaleQuestion(questionText));
+    setCurrentQuestion(quizLogic.createIntonationQuestion(questionText));
   }
 
   function toggleIsPlaying() {
@@ -147,13 +117,13 @@ export function ScaleQuizPageContent() {
       </div>
 
       <div className="quiz-options-container">
-        {currentQuestion.options.map((scale) => (
+        {currentQuestion.options.map((pitchModifier) => (
           <button
-            key={scale.Name}
+            key={pitchModifier}
             className="quiz-option-btn"
-            onClick={() => handleAnswer(scale)}
+            onClick={() => handleAnswer(pitchModifier)}
           >
-            {scale.Name}
+            {pitchModifier}
           </button>
         ))}
       </div>

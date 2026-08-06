@@ -1,10 +1,14 @@
 import { interval } from "tonal";
 
+// Custom Types
+
 export type NaturalNote = "C" | "D" | "E" | "F" | "G" | "A" | "B";
 export type AccidentalNote = `${NaturalNote}#` | `${NaturalNote}b`;
 export type Note = NaturalNote | AccidentalNote;
 export type octave = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type interval = 2 | 4 | 5 | 7; // basic intervals for simplicity, expansion possible in the future
+export type PitchModifier = "Sharp" | "Flat" | "In Tune"
+
 export const orderedNotes: Note[] = ["C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"] 
 
 export interface Scale {
@@ -15,6 +19,8 @@ export interface Scale {
 export interface Interval {
   value: interval;
 }
+
+// Question Categories
 
 export interface IntervalQuestion {
   text: string;
@@ -41,7 +47,16 @@ export interface MajorScaleQuestion {
   selectedAnswer: Scale | null;
 }
 
-// Major scale obj
+export interface IntonationQuestion {
+  text: string;
+  isAnswered: boolean,
+  options: PitchModifier[],
+  noteToPlay: Note,
+  correctAnswer: PitchModifier,
+  selectedAnswer: PitchModifier | null
+}
+
+// Major scale objects
 
 export const C_Major_Scale: Scale = {
   Name: "C Major",

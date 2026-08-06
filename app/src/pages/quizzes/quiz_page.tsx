@@ -1,7 +1,7 @@
 import Header from "../../components/header.jsx";
 import Footer from "../../components/footer.jsx";
 import * as quizLogic from "../../quiz_logic.ts";
-import { PitchRecognitionQuestion, NaturalNote, octave } from "../../types.ts";
+import { PitchRecognitionQuestion, NaturalNote} from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
@@ -29,7 +29,8 @@ export function QuizPageContent() {
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  const playNote = useEffect(() => {
+  // play correct pitch
+  useEffect(() => {
     const synth = new tone.Synth().toDestination();
     synth.triggerAttackRelease(currentPitchRecognitionQuestion.correctAnswer + "4", noteLength);
 
@@ -67,12 +68,6 @@ export function QuizPageContent() {
 
     nextPitchRecognitionQuestion();
   }
-
-  /*
-  function getRandomOctave(): number {
-    return Math.floor(( Math.random() + 1) * 8);
-  }
-  */
 
   function nextPitchRecognitionQuestion() {
     setCurrentPitchRecognitionQuestion(quizLogic.createPitchRecognitionQuestion(questionText));

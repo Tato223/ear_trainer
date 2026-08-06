@@ -30,7 +30,8 @@ export function EndlessIntervalsContent() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const navigate = useNavigate()
 
-  const playNote = useEffect(() => {
+  // play scale notes
+  useEffect(() => {
       const synth = new tone.Synth().toDestination();
       const intervalNotes: Note[] = currentQuestion.intervalNotes
   
@@ -76,12 +77,6 @@ export function EndlessIntervalsContent() {
       nextQuestion();
     }
   }
-
-  /*
-  function getRandomOctave(): number {
-    return Math.floor(( Math.random() + 1) * 8);
-  }
-  */
 
   function nextQuestion() {
     setCurrentQuestion(

@@ -9,6 +9,8 @@ import {
   scales,
   interval,
   Note,
+  PitchModifier,
+  IntonationQuestion
 } from "./types";
 
 const possibleNotes: Note[] = ["C", "D", "E", "F", "G", "A", "B"];
@@ -57,11 +59,32 @@ export function createIntervalQuestion(text: string): IntervalQuestion {
     isAnswered: false,
     correctAnswer: correctAnswer,
     selectedAnswwer: null,
-    intervalNotes: [rootNote, intervalNote]
+    intervalNotes: [rootNote, intervalNote],
   };
 
-  console.log(`Question: ${question}`)
   return question;
+}
+
+export function createIntonationQuestion(text: string): IntonationQuestion {
+  const options: PitchModifier[] = generateIntonationOptionsAr();
+  const correctModifier = getCorrectModifier(options);
+  const noteToPlay = selectRandomNote(possibleNotes);
+
+  const question: IntonationQuestion = {
+    text: text,
+    options: options,
+    isAnswered: false,
+    noteToPlay: noteToPlay,
+    correctAnswer: correctModifier,
+    selectedAnswer: null
+  }
+
+  return question
+}
+
+function selectRandomNote(options: Note[]): Note {
+  const randomIndex = Math.floor(Math.random() * options.length);
+  return options[randomIndex];
 }
 
 function getCorrectNote(options: NaturalNote[]): NaturalNote {
@@ -78,15 +101,18 @@ function getCorrectInterval(rootNote: Note, intervalNote: Note): string {
   const derivedInterval = Interval.distance(rootNote, intervalNote)
     .toString()
     .slice(0, 1);
-  console.log(`Resulting Interval: ${derivedInterval}`)
   return derivedInterval;
+}
+
+function getCorrectModifier(options: PitchModifier[]): PitchModifier {
+  const randomIndex = Math.floor(Math.random() * options.length)
+  return options[randomIndex]
 }
 
 function selectRootNote(): Note {
   const possibleNotes: Note[] = ["C", "D", "E", "F", "G", "A", "B"];
   const randomIndex = Math.floor(Math.random() * possibleNotes.length);
   const rootNote = possibleNotes[randomIndex];
-  console.log(`Root Note: ${rootNote}`)
   return rootNote;
 }
 
@@ -118,7 +144,6 @@ function getIntervalNameFromRoot(rootNote: Note): Note {
 
   const randomIndex = Math.floor(Math.random() * possibleIntervals.length);
   const noteIndex = possibleIntervals[randomIndex];
-  console.log(`Second Note: ${notes[noteIndex]}`)
   return notes[noteIndex];
 }
 
@@ -133,8 +158,10 @@ function generateOptionsArr(): NaturalNote[] {
     possibleNotes.splice(randomIndex, 1);
 
     options.push(newNote);
-  }
-``
-  // console.log(options);
+  };
   return options;
+}
+
+function generateIntonationOptionsAr(): PitchModifier[] {
+  return ["Sharp", "Flat", "In Tune"]
 }

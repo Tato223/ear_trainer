@@ -23,21 +23,35 @@ import QuizCompletePage from './pages/quiz_complete_page'
 import EndlessCompletePage from './pages/endless_pages/endless_complete_page'
 import EndlessScalesPage from './pages/endless_pages/endless_major_scales'
 import EndlessIntervalsPage from './pages/endless_pages/endless_intervals'
+import IntonationQuizPage from './pages/quizzes/intonation_quiz_page'
+import EndlessIntonationPage from './pages/endless_pages/endless_intonation'
 
 const router = createBrowserRouter([
   {path: "/", element: <Home/>},
+
+  //quizzes
   {path: "/quizzes", element: <Quizzes/>},
   {path: "/quizzes/pitch_recognition", element: <QuizPage/>},
   {path: "/quizzes/major_scales", element: <ScaleQuizPage/>},
   {path: "/quizzes/intervals", element: <IntervalQuizPage/>},
+  {path: "/quizzes/intonation", element: <IntonationQuizPage/>},
   {path: "/quizzes/complete", element: <QuizCompletePage/>},
+
+  //endless mode
   {path: "/endless", element: <EndlessPage/>},
   {path: "/endless/pitch_recognition", element: <EndlessQuizPage/>},
   {path: "/endless/major_scales", element: <EndlessScalesPage/>},
   {path: "/endless/intervals", element: <EndlessIntervalsPage/>},
+  {path: "/endless/intonation", element: <EndlessIntonationPage/>},
   {path: "/endless/complete", element: <EndlessCompletePage/>},
+
+  //leaderboard
   {path: "/leaderboard", element: <LeaderboardPage/>},
+
+  //library
   {path: "/library", element: <LibraryPage/>},
+
+  //auth
   {path: "/auth/signup", element: <SignupPage/>},
   {path: "/auth/login", element: <LoginPage/>}
 ]);

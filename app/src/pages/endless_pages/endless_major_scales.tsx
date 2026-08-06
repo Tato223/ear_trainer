@@ -31,8 +31,9 @@ export function EndlessScalesPageContent() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const navigate = useNavigate()
 
-  const playScale = useEffect(() => {
-    
+  // play scale audio
+  useEffect(() => {
+
       const synth = new tone.Synth().toDestination();
       const correctScaleNotes: Note[] = currentQuestion.correctAnswer.Notes;
   

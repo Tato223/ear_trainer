@@ -1,40 +1,54 @@
-import Header from "../../components/header.jsx";
-import Footer from "../../components/footer.jsx";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 import * as quizLogic from "../../quiz_logic.ts";
-import { PitchRecognitionQuestion, NaturalNote } from "../../types.ts";
+import { PitchModifier, IntonationQuestion } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
-import {useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
+const maxQuestions = 10;
 const noteLength = "4n"; //Quarter note
-const defaultOctave = 3
+const defaultOctave = 3;
 
-export default function EndlessQuizPage() {
+export default function EndlessIntonationPage() {
   return (
     <>
       <Header />
-      <EndlessQuizPageContent />
+      <EndlessIntonationContent />
       <Footer />
     </>
   );
 }
 
-export function EndlessQuizPageContent() {
-  let questionText = "Select an answer choice to identify the note.";
+export function EndlessIntonationContent() {
+  const questionText = "Select an answer choice to identify the major scale.";
 
-  const [currentQuestion, setCurrentQuestion] =
-    useState<PitchRecognitionQuestion>(() =>
-      quizLogic.createPitchRecognitionQuestion(questionText),
-    );
+  const [currentQuestion, setCurrentQuestion] = useState<IntonationQuestion>(
+    () => quizLogic.createIntonationQuestion(questionText),
+  );
+
+  currentQuestion.text = `The intended note is ${currentQuestion.noteToPlay}. Determine whether it is Sharp, Flat, or In Tune.`;
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  //play the correct note
+  //play note
   useEffect(() => {
     const synth = new tone.Synth().toDestination();
+
+    // Determines how to adjust the pitch depending on the correct answer
+    let modifier = 0;
+    if (currentQuestion.correctAnswer === "Flat") {
+      modifier = -40;
+    } else if (currentQuestion.correctAnswer === "Sharp") {
+      modifier = +40;
+    }
+
+    //adjust the pitch using the modifier
+    synth.detune.value = modifier;
+
     synth.triggerAttackRelease(
-      currentQuestion.correctAnswer + defaultOctave,
+      currentQuestion.noteToPlay + defaultOctave,
       noteLength,
     );
 
@@ -44,22 +58,22 @@ export function EndlessQuizPageContent() {
     };
   }, [currentQuestion, isPlaying]);
 
-  const [questionsCorrect, setQuestionsCorrect] =
-    useState<number>(0);
+  const [questionsCorrect, setQuestionsCorrect] = useState<number>(0);
 
   const quizData = {
     correct: questionsCorrect,
-    quizEndpoint: "/pitch_recognition",
+    numQuestions: maxQuestions,
+    quizEndpoint: "/intonation/",
   };
 
-  function handleAnswer(selected: NaturalNote): void {
-
-    const isAnswerCorrect: boolean = (selected == currentQuestion.correctAnswer)
+  function handleAnswer(selected: PitchModifier): void {
+    const isAnswerCorrect: boolean =
+      selected.toString() == currentQuestion.correctAnswer;
 
     // end quiz if an answer is correct
     if (!isAnswerCorrect) {
-        navigate("/endless/complete", {replace: true, state: quizData})
-        return;
+      navigate("/endless/complete", { replace: true, state: quizData });
+      return;
     }
 
     // count correct answers
@@ -72,14 +86,12 @@ export function EndlessQuizPageContent() {
         selectedAnswer: selected,
       }));
 
-      nextPitchRecognitionQuestion();
+      nextQuestion();
     }
   }
 
-  function nextPitchRecognitionQuestion() {
-    setCurrentQuestion(
-      quizLogic.createPitchRecognitionQuestion(questionText),
-    );
+  function nextQuestion() {
+    setCurrentQuestion(quizLogic.createIntonationQuestion(questionText));
   }
 
   function toggleIsPlaying() {
@@ -108,13 +120,13 @@ export function EndlessQuizPageContent() {
       </div>
 
       <div className="quiz-options-container">
-        {currentQuestion.options.map((note) => (
+        {currentQuestion.options.map((pitchModifier) => (
           <button
-            key={note}
+            key={pitchModifier}
             className="quiz-option-btn"
-            onClick={() => handleAnswer(note)}
+            onClick={() => handleAnswer(pitchModifier)}
           >
-            {note}
+            {pitchModifier}
           </button>
         ))}
       </div>

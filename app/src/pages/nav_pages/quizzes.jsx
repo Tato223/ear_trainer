@@ -21,9 +21,9 @@ export function QuizzesContent() {
             <div className="quiz-container">
 
                 <QuizCard name="Pitch Recognition" quizEndpoint="pitch_recognition" text="Match the audio with the correct note."/>
-                <QuizCard name="Intonation Test" quizEndpoint="" text="Recognize whether a note is sharp, flat, or natural."/>
+                <QuizCard name="Intonation Test" quizEndpoint="intonation" text="Recognize whether a note is sharp, flat, or natural."/>
                 <QuizCard name="Major Scales" quizEndpoint="major_scales" text="Identify the major scale based on the audio."/>
-                <QuizCard name="Intervals" quizEndpoint="/intervals" text="Select the interval between two notes"/>
+                <QuizCard name="Intervals" quizEndpoint="intervals" text="Select the interval between two notes."/>
                 
             </div>
 

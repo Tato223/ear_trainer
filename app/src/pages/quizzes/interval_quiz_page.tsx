@@ -30,7 +30,8 @@ export function IntervalQuizContent() {
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  const playNote = useEffect(() => {
+  // play interval notes
+  useEffect(() => {
     const synth = new tone.Synth().toDestination();
     const intervalNotes: Note[] = currentQuestion.intervalNotes
 
