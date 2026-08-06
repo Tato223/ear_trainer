@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import HighScore, CustomUser
+from .models import HighScore
 
 User = get_user_model()
 
@@ -24,6 +24,5 @@ class HighScoreSerializer(serializers.ModelSerializer):
     owned_by = serializers.ReadOnlyField(source='owned_by.username')
     
     class Meta():
-        
         model = HighScore
         fields = ['value', 'owned_by']
