@@ -46,7 +46,7 @@ class HighScoreView(APIView):
     
     def get(self, request):
             
-            all_highscores = HighScore.objects.all()
+            all_highscores = HighScore.objects.all().order_by("-value")
             serializer = HighScoreSerializer(all_highscores, many=True)
             return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
     
