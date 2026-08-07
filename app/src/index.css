@@ -1,18 +1,22 @@
 :root {
-  --background-color : #693556;
-  --primary-color : #CF68AA;
-  --secondary-color : #EAD6E3;
-  --header-color : #4F2841;
+  --background-color : #14161f;
+  --primary-color : #f2ede2;
+  --secondary-color : #9aa0b4;
+  --header-color : #1c2030;
 
-  --subtitle-color : rgba(234, 214, 227, .55);
+  --subtitle-color : #6c88a8;
 
-  --accent-color : #57C780;
-  --accent-color-gradient : #1A783C;
+  --accent-color : #c89b5c;
+  --accent-color-selected : #d6ae77;
+  --accent-color-gradient : #dfc272;
 
-  --card-color : rgba(0, 0, 0, .15);
+  --card-color : #1c2030;
 
     font-family: Inter, sans-serif;
     font-feature-settings: 'liga' 1, 'calt' 1;
+
+  --smooth-bgColor-transition : background-color 0.3s ease;
+  --smooth-size-transition : transform 0.3s ease;
 }
 
 @supports (font-variation-settings: normal) {
@@ -47,6 +51,8 @@ body {
   scrollbar-width: none;
   scrollbar-width: none; 
   -ms-overflow-style: none; 
+
+  font-family:'Inter', sans-serif;
 }
 
 body::-webkit-scrollbar {
@@ -85,6 +91,9 @@ header {
   padding: 2% 25% 2% 10%;
   font-size: 2.5em;
   font-weight: bolder;
+
+  font-family:'Fraunces', serif;
+  color: var(--accent-color);
 }
 
 .nav-links {
@@ -95,16 +104,23 @@ header {
   justify-content: right;
   align-items: center;
   width: 100%;
+
+  transition: color 0.25s ease;
+}
+
+.nav-links > a:hover {
+  color: var(--primary-color);
+  transition: color 0.25s ease;
+  cursor: pointer;
 }
 
 a {
   text-decoration: none;
 }
 
-.nav-links > a:hover,
 .signup-button:hover {
   cursor: pointer;
-  transform: scale(1.025);
+  transition: var(--smooth-size-transition);
 }
 
 .header-title:hover,
@@ -120,6 +136,8 @@ a {
   min-width: 70px;
   border-style: none;
   border-radius: 8px;
+  transition: var(--smooth-size-transition);
+  color: var(--background-color);
 }
 
 .user-pfp__header {
@@ -135,13 +153,15 @@ a {
 .content-container {
   padding: 2.5% 0% 5% 0%;
   background-color: var(--background-color);
-  min-height: max-content + 5dvh;
+  min-height: 80dvh;
   width: 100%;
 
   display: flex;
   flex-direction: column;
 
-  background-image: linear-gradient(var(--background-color), var(--primary-color));
+  background-image : 
+      radial-gradient(ellipse 900px 500px at 78% 15%, rgba(200,155,92,0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 10% 85%, rgba(108,136,168,0.06), transparent 60%);
 }
 
 hr {
@@ -177,6 +197,14 @@ footer {
   text-align: center;
 }
 
+button {
+  color: var(--background-color);
+  transition: var(--smooth-size-transition);
+}
+
 button:hover {
   transform: scale(1.025);
+  background-color: var(--accent-color-selected);
+  transition: var(--smooth-bgColor-transition);
+  transition: var(--smooth-size-transition);
 }

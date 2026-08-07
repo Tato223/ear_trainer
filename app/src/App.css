@@ -5,7 +5,7 @@ body {
 }
 
 .hero-container {
-  padding: 7.5% 0% 1% 10%;
+  padding: 2.5% 0% 1% 10%;
 
   width: 90%;
   min-height: 90dvh;
@@ -22,18 +22,39 @@ body {
 
 .hero {
   font-size: 5em;
-  padding: 1%;
+  padding: 1% 1% .5% 1%;
   max-width: 45dvw;
   height: 100%;
+
+  font-family:'Fraunces', serif;
+  color: var(--primary-color);
+}
+
+.hero > em {
+  font-style: italic;
+  color: var(--accent-color);
 }
 
 .hero__subtitle {
   padding-left: 1%;
-  font-size: clamp(1em, 1dvw + 2em, 2em);
-  color: var(--subtitle-color);
+  font-size: clamp(1em, 1dvw + 1em, 1.5em);
+  color: var(--secondary-color);
 
-  max-width: 35dvw;
+  max-width: 40dvw;
   min-width: 35dvw;
+
+  font-family:'Fraunces', serif;
+}
+
+.cta-btns {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  max-width: fit-content;
+  padding-left: .5%;
+
+  margin-top: 20px;
 }
 
 .cta-button {
@@ -42,8 +63,8 @@ body {
   min-height: 50px;
   width: 150px;
 
-  background-color: var(--accent-color);
-  color: white;
+  background-image: linear-gradient(to bottom, var(--accent-color), var(--accent-color-gradient));
+  color: var(--background-color);
   border-style: none;
   border-radius: 8px;
 
@@ -54,11 +75,43 @@ body {
   font-weight: thick;
 
   margin-left: 1%;
+
+  transition: var(--smooth-bgColor-transition);
 }
 
 .cta-button:hover {
   cursor: pointer;
-  transform: scale(1.025);
+}
+
+.secondary-cta-button {
+  margin-top: 1.5%;
+  height: 60px;
+  min-height: 50px;
+  width: 150px;
+
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--secondary-color);
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--card-color);
+  border-radius: 8px;
+
+  padding: 1.5%;
+
+  font-size: 1.25em;
+  font-weight: thick;
+
+  margin-left: 1%;
+
+  transition: var(--smooth-bgColor-transition);
+  transition: border-color 0.25s ease;
+}
+
+.secondary-cta-button:hover {
+  cursor: pointer;
+  background-color: var(--card-color);
+  border-color: var(--secondary-color);
+  transition: border-color 0.25s ease;
 }
 
 .about-container {
@@ -89,7 +142,7 @@ h2 {
 }
 
 .instructions {
-  padding: 5% 0% 1% 0%;
+  padding: 1% 0% 1% 0%;
   min-width: 100dvw;
   min-height: 5dvh;
   text-align: center;
@@ -121,6 +174,13 @@ h2 {
 
   background-color: var(--card-color);
   border-radius: 24px;
+
+  transition: var(--smooth-size-transition);
+}
+
+.quiz-card:hover {
+  transform: scale(1.05);
+  transition: var(--smooth-size-transition);
 }
 
 .quiz-card__title {
@@ -146,13 +206,22 @@ h2 {
   background-color: var(--accent-color);
   cursor: pointer;
 
-  color: white;
+  color: var(--background-color);
   font-size: medium;
 
   margin-top: 30%;
 
   border-style: None;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+
+  transition: var(--smooth-bgColor-transition);
+  transition: var(--smooth-size-transition);
+}
+
+.quiz-card__button:hover {
+  background-color: var(--accent-color-selected);
+  transition: var(--smooth-bgColor-transition);
+  transition: var(--smooth-size-transition);
 }
 
 /* ENDLESS MODE */
@@ -224,7 +293,7 @@ h2 {
 }
 
 .leaderboard-heading {
-  padding: 5% 0% 0% 5%;
+  padding: 1% 0% 0% 5%;
 }
 
 .leaderboard-container {
@@ -244,6 +313,7 @@ h2 {
   background-color: var(--card-color);
   border-radius: 50px;
   min-height: 90px;
+  min-width: 420px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -317,6 +387,7 @@ h2 {
 .signup-container,
 .login-container {
   margin: 0% 0% 5% 0%;
+  min-width: 500px;
   width: 90dvw;
   max-height: 80%;
   display: flex;
@@ -363,6 +434,7 @@ h2 {
 label {
   font-size: 1.15em;
   color: var(--secondary-color);
+  padding-bottom: 1%;
 }
 
 #username-entry,
@@ -376,7 +448,7 @@ label {
   min-height: 30px;
 
   padding: 8px;
-  background-color: var(--card-color);
+  background-color: var(--background-color);
 
   color: var(--secondary-color);
 }
@@ -392,10 +464,14 @@ label {
   font-size: 1.25em;
 
   color: white;
+
+  transition: var(--smooth-bgColor-transition);
 }
 
 .submit-btn:hover {
-  transform: scale(1.025);
+  /*transform: scale(1.025);*/
+  transition: var(--smooth-bgColor-transition);
+  background-color: var(--accent-color-selected);
   cursor: pointer;
 }
 
@@ -403,7 +479,14 @@ label {
 .login-prompt {
   text-align: center;
   font-size: 2.5em;
+  color: var(--primary-color);
+  padding: 0% 0% 2.5% 0%;
+}
+
+.signup-prompt > em,
+.login-prompt > em {
   color: var(--accent-color);
+  font-style: normal;
 }
 
 .signup-redirect {
@@ -492,6 +575,13 @@ label {
   font-size: 1.9em;
   color: var(--secondary-color);
   cursor: pointer;
+  transform: var(--smooth-bgColor-transition);
+}
+
+.quiz-option-btn:hover {
+  background-color: var(--heading-color);
+  transform: var(--smooth-bgColor-transition);
+  transform: scale(1.025);
 }
 
 .quiz-completion-text {

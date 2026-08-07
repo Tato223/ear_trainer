@@ -18,7 +18,7 @@ export function SignupContent() {
     <div className="content-container">
       <div className="signup-container">
         <form className="signup-form" onSubmit={postLoginData}>
-          <h2 className="signup-prompt">Create an Account</h2>
+          <h2 className="signup-prompt"><em>Create</em> an Account</h2>
 
           <FormBlock
             label="Username"

@@ -22,7 +22,7 @@ export function LoginContent() {
 
         <form className="login-form">
 
-          <h2 className="login-prompt">Log in to Your Account</h2>
+          <h2 className="login-prompt"><em>Log in</em> to Your Account</h2>
 
           <FormBlock label="Username" id="username-entry" type="text" min={3} max={12} isRequired={true} placeholder="Enter your username."/>
           <FormBlock label="Password" id="password-entry" type="password" min={3} max={12} isRequired={true} placeholder="Ex. MyPassword123"/>
