@@ -17,7 +17,7 @@ export function SignupContent() {
   return (
     <div className="content-container">
       <div className="signup-container">
-        <form className="signup-form" onSubmit={postLoginData}>
+        <form className="signup-form" onSubmit={postSignupData}>
           <h2 className="signup-prompt"><em>Create</em> an Account</h2>
 
           <FormBlock
@@ -63,7 +63,7 @@ export function SignupContent() {
   );
 }
 
-async function postLoginData(event) {
+async function postSignupData(event) {
   event.preventDefault();
 
   const url = "http://127.0.0.1:8000/auth/signup/";

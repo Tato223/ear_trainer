@@ -20,7 +20,7 @@ export function LoginContent() {
     <div className="content-container">
       <div className="signup-container">
 
-        <form className="login-form">
+        <form className="login-form" onSubmit={postLoginData}>
 
           <h2 className="login-prompt"><em>Log in</em> to Your Account</h2>
 
@@ -38,3 +38,31 @@ export function LoginContent() {
     </div>
   );
 }
+
+async function postLoginData(event) {
+  event.preventDefault();
+
+  const url = "http://127.0.0.1:8000/auth/login/";
+  const payload = {
+    username: document.querySelector("#username-entry")?.value,
+    password: document.querySelector("#password-entry")?.value,
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(response.status);
+    }
+
+    const responseData = await response.json();
+    localStorage.setItem("authToken", responseData.token)
+    responseData? console.log(`Response: ${responseData}`) : null;
+  } catch (error) {
+    console.error(error);
+  }
+};
