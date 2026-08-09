@@ -1,7 +1,7 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import FormBlock from "../components/form_block";
-import { Form, Link } from "react-router";
+import { Form, Link, useNavigate } from "react-router";
 
 export default function SignupPage() {
   return (
@@ -14,11 +14,45 @@ export default function SignupPage() {
 }
 
 export function SignupContent() {
+
+  const navigate = useNavigate();
+  const handleSignup = async (event) => {
+    event.preventDefault();
+
+    const url = "http://127.0.0.1:8000/auth/signup/";
+    const payload = {
+      username: document.querySelector("#username-entry")?.value,
+      email: document.querySelector("#email-entry")?.value,
+      password: document.querySelector("#password-entry")?.value,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+
+      const responseData = await response.json();
+      console.log(`Response: ${responseData}`);
+
+      return navigate("/auth/login/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="content-container">
       <div className="signup-container">
-        <form className="signup-form" onSubmit={postSignupData}>
-          <h2 className="signup-prompt"><em>Create</em> an Account</h2>
+        <form className="signup-form" onSubmit={handleSignup}>
+          <h2 className="signup-prompt">
+            <em>Create</em> an Account
+          </h2>
 
           <FormBlock
             label="Username"
@@ -62,31 +96,3 @@ export function SignupContent() {
     </div>
   );
 }
-
-async function postSignupData(event) {
-  event.preventDefault();
-
-  const url = "http://127.0.0.1:8000/auth/signup/";
-  const payload = {
-    username: document.querySelector("#username-entry")?.value,
-    email: document.querySelector("#email-entry")?.value,
-    password: document.querySelector("#password-entry")?.value,
-  };
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      throw new Error(response.status);
-    }
-
-    const responseData = await response.json();
-    console.log(`Response: ${responseData}`);
-  } catch (error) {
-    console.error(error);
-  }
-};

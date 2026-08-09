@@ -16,6 +16,8 @@ import { useAuth } from "../auth_context";
 function Header() {
   const { user, isLoading, logout } = useAuth();
 
+  if (isLoading) {return null};
+
   return (
     <header user={user}>
       <Link to="/">
