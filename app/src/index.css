@@ -108,6 +108,10 @@ header {
   transition: color 0.25s ease;
 }
 
+.nav-links > a {
+  transition: color 0.25s ease;
+}
+
 .nav-links > a:hover {
   color: var(--primary-color);
   transition: color 0.25s ease;
