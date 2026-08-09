@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useAuth } from "../auth_context";
 
 // Later fetch from users API endpoint
 // let isLoggedIn = false;
@@ -12,40 +13,36 @@ import { Link } from "react-router";
 - PRIVACY POLICY & TOS
 */
 
-function Header({isLoggedIn=false}) {
+function Header() {
+  const { user, isLoading, logout } = useAuth();
 
+  return (
+    <header user={user}>
+      <Link to="/">
+        <h2 className="header-title">EarTrainer</h2>
+      </Link>
 
+      <nav className="nav-container">
+        <ul className="nav-links">
+          <Link to="/quizzes">Quizzes</Link>
+          <Link to="/endless">Endless Mode</Link>
+          <Link to="/leaderboard">Leaderboard</Link>
+          <Link to="/library">Library</Link>
 
-    return (
-        <header>
-            <Link to="/">
-                <h2 className="header-title">EarTrainer</h2>
+          {user ? (
+            // change to /me later
+            <Link to="/auth/login">
+              <img className="user-pfp__header" src="https://placehold.co/40" />
             </Link>
-
-            <nav className="nav-container">
-                <ul className="nav-links">
-                    <Link to="/quizzes">Quizzes</Link>
-                    <Link to="/endless">Endless Mode</Link>
-                    <Link to="/leaderboard">Leaderboard</Link>
-                    <Link to="/library">Library</Link>
-
-                        {isLoggedIn ? 
-
-                        // change to /me later
-                        (<Link to="/auth/login">
-                            <img className="user-pfp__header" src="https://placehold.co/40"/>
-                        </Link>) :
-                        
-                        (<Link to="/auth/signup">
-                            <button className="signup-button">Sign up</button>
-                        </Link>)
-
-                        }   
-
-                </ul>
-            </nav>
-        </header>
-    );
+          ) : (
+            <Link to="/auth/signup">
+              <button className="signup-button">Sign up</button>
+            </Link>
+          )}
+        </ul>
+      </nav>
+    </header>
+  );
 }
 
 export default Header;
