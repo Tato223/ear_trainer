@@ -5,6 +5,7 @@ import { Note, interval, IntervalQuestion , orderedNotes, octave} from "../../ty
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
+import SubmitQuestionButton from "../../components/submit_question_btn.jsx";
 
 const maxQuestions = 10;
 const noteLength = "4n"; //Quarter note
@@ -71,6 +72,7 @@ export function IntervalQuizContent() {
   }
 
   function handleAnswer(selected: interval) {
+
     if (selected.toString() === currentQuestion.correctAnswer) {
       setPitchRecognitionQuestionsCorrect(questionsCorrect + 1);
     }
@@ -87,7 +89,7 @@ export function IntervalQuizContent() {
   }
 
   /*
-  function getRandomOctave(): number {
+  function getRandomOctave(): number 
     return Math.floor(( Math.random() + 1) * 8);
   }
   */
@@ -102,7 +104,10 @@ export function IntervalQuizContent() {
 
   return (
     <div className="content-container">
-      <h2 className="quiz-text">{currentQuestion.text}</h2>
+      <div className="quiz-text__container">
+        <h2 className="quiz-text">{currentQuestion.text}</h2>
+        <SubmitQuestionButton onClick={currentQuestion.selectedAnswer? nextQuestion : null}/>
+      </div>
 
       <div className="quiz-img-container" onClick={toggleIsPlaying}>
         <svg

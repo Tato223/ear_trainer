@@ -27,7 +27,7 @@ export interface IntervalQuestion {
   isAnswered: boolean;
   options: interval[];
   correctAnswer: interval | string;
-  selectedAnswwer: interval | null;
+  selectedAnswer: interval | null;
   intervalNotes: Note[]
 }
 

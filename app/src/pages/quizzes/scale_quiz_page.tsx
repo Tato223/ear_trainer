@@ -5,6 +5,7 @@ import { Scale, MajorScaleQuestion, orderedNotes, Note, octave } from "../../typ
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
+import SubmitQuestionButton from "../../components/submit_question_btn.jsx";
 
 const maxQuestions = 10;
 const noteLength = "8n"; //Eighth note
@@ -127,7 +128,10 @@ export function ScaleQuizPageContent() {
 
   return (
     <div className="content-container">
-      <h2 className="quiz-text">{currentQuestion.text}</h2>
+      <div className="quiz-text__container">
+        <h2 className="quiz-text">{currentQuestion.text}</h2>
+        <SubmitQuestionButton onClick={currentQuestion.selectedAnswer? nextQuestion : null}/>
+      </div>
 
       <div className="quiz-img-container" onClick={toggleIsPlaying}>
         <svg

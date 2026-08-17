@@ -392,14 +392,14 @@ h2 {
 
 .signup-container,
 .login-container {
-  margin: 0% 0% 5% 0%;
+  margin: 5% 0% 5% 0%;
   min-width: 500px;
-  width: 90dvw;
+  width: 90%;
   max-height: 80%;
   display: flex;
   justify-content: center;
   align-content: center;
-  min-height: fit-content;
+  min-height: max-content;
 
   align-self: center;
 }
@@ -519,10 +519,17 @@ label {
   background-color: var(--secondary-color);
 }
 
+.quiz-text__container {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+
 .quiz-text {
   text-align: center;
   padding: 2.5% 0% 2.5% 0%;
   color: var(--secondary-color);
+  width: 100%;
+  grid-column: 2;
 }
 
 .quiz-img-container {
@@ -588,6 +595,27 @@ label {
   background-color: var(--heading-color);
   transform: var(--smooth-bgColor-transition);
   transform: scale(1.025);
+}
+
+.question-submit-btn {
+  height: 30px;
+  width: 100px;
+
+  background-color: var(--accent-color);
+  color: black;
+  cursor: pointer;
+
+  border-radius: 8px;
+
+  background-image: linear-gradient( to bottom,
+    var(--accent-color),
+    var(--accent-color-gradient)
+  );
+
+  margin: auto;
+
+  grid-column: 3;
+
 }
 
 .quiz-completion-text {

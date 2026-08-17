@@ -157,6 +157,7 @@ a {
 }
 
 .content-container {
+  padding-bottom: 5%;
   background-color: var(--background-color);
   min-height: 80dvh;
   width: 100%;
@@ -206,6 +207,7 @@ footer {
 button {
   color: var(--background-color);
   transition: var(--smooth-size-transition);
+  border-style: none;
 }
 
 button:hover {

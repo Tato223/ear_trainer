@@ -58,7 +58,7 @@ export function createIntervalQuestion(text: string): IntervalQuestion {
     options: options,
     isAnswered: false,
     correctAnswer: correctAnswer,
-    selectedAnswwer: null,
+    selectedAnswer: null,
     intervalNotes: [rootNote, intervalNote],
   };
 

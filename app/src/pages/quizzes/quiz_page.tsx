@@ -1,5 +1,6 @@
 import Header from "../../components/header.jsx";
 import Footer from "../../components/footer.jsx";
+import SubmitQuestionButton from "../../components/submit_question_btn.jsx";
 import * as quizLogic from "../../quiz_logic.ts";
 import { PitchRecognitionQuestion, NaturalNote} from "../../types.ts";
 import { useEffect, useState } from "react";
@@ -21,9 +22,9 @@ export default function QuizPage() {
 
 export function QuizPageContent() {
   let questionText = "Select an answer choice to identify the note.";
-  const [questionsCompleted, setPitchRecognitionQuestionsCompleted] = useState<number>(1);
+  const [questionsCompleted, setQuestionsCompleted] = useState<number>(1);
 
-  const [currentPitchRecognitionQuestion, setCurrentPitchRecognitionQuestion] = useState<PitchRecognitionQuestion>(() =>
+  const [currentQuestion, setCurrentQuestion] = useState<PitchRecognitionQuestion>(() =>
     quizLogic.createPitchRecognitionQuestion(questionText),
   );
 
@@ -32,13 +33,13 @@ export function QuizPageContent() {
   // play correct pitch
   useEffect(() => {
     const synth = new tone.Synth().toDestination();
-    synth.triggerAttackRelease(currentPitchRecognitionQuestion.correctAnswer + "4", noteLength);
+    synth.triggerAttackRelease(currentQuestion.correctAnswer + "4", noteLength);
 
     return () => {
       synth.dispose();
       setIsPlaying(false)
     };
-  }, [currentPitchRecognitionQuestion, isPlaying]);
+  }, [currentQuestion, isPlaying]);
 
   const [questionsCorrect, setPitchRecognitionQuestionsCorrect] = useState<number>(0);
 
@@ -53,24 +54,27 @@ export function QuizPageContent() {
     return <Navigate to="/quizzes/complete" replace={true} state={quizData} />;
   }
 
+  //TODO: Change logic to only check correctness after a submit
   function handleAnswer(selected: NaturalNote) {
-    if (selected === currentPitchRecognitionQuestion.correctAnswer) {
+    if (selected === currentQuestion.correctAnswer) {
       setPitchRecognitionQuestionsCorrect(questionsCorrect + 1);
     }
 
-    setPitchRecognitionQuestionsCompleted(questionsCompleted + 1);
+    setQuestionsCompleted(questionsCompleted + 1);
 
-    setCurrentPitchRecognitionQuestion((prev) => ({
+    setCurrentQuestion((prev) => ({
       ...prev,
       isAnswered: true,
       selectedAnswer: selected,
     }));
-
-    nextPitchRecognitionQuestion();
   }
 
-  function nextPitchRecognitionQuestion() {
-    setCurrentPitchRecognitionQuestion(quizLogic.createPitchRecognitionQuestion(questionText));
+  function selectAnswer(select: NaturalNote) {
+    // change the color of selected answer to highlight it
+  }
+
+  function nextQuestion() {
+    setCurrentQuestion(quizLogic.createPitchRecognitionQuestion(questionText));
   }
 
   function toggleIsPlaying() {
@@ -79,7 +83,11 @@ export function QuizPageContent() {
 
   return (
     <div className="content-container">
-      <h2 className="quiz-text">{currentPitchRecognitionQuestion.text}</h2>
+      
+      <div className="quiz-text__container">
+        <h2 className="quiz-text">{currentQuestion.text}</h2>
+        <SubmitQuestionButton onClick={currentQuestion.selectedAnswer? nextQuestion : null}/>
+      </div>
 
       <div className="quiz-img-container" onClick={toggleIsPlaying}>
         <svg
@@ -97,7 +105,7 @@ export function QuizPageContent() {
       </div>
 
       <div className="quiz-options-container">
-        {currentPitchRecognitionQuestion.options.map((note) => (
+        {currentQuestion.options.map((note) => (
           <button
             key={note}
             className="quiz-option-btn"
@@ -107,6 +115,7 @@ export function QuizPageContent() {
           </button>
         ))}
       </div>
+
     </div>
   );
 }
