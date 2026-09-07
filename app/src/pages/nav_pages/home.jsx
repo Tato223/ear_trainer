@@ -1,42 +1,33 @@
-import Header from '../../components/header'
-import Footer from '../../components/footer'
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 
-export default function Home(){
-    return(
-        <div className='page'>
-            <Header/>
-            <HomeContent/>
-            <Footer/>
-        </div>
-    );
+export default function Home() {
+  return (
+    <div className="page">
+      <Header />
+      <HomeContent />
+      <Footer />
+    </div>
+  );
 }
 
-export function  HomeContent() {
-    return (
-        <div className="content-container">
-            <div className="hero-container">
-                <h1 className="hero">Hear Better. <br/> <em>Play</em> Better.</h1>
-                <p className="hero__subtitle">Develop confident pitch recognition with quizzes, endless challenges, and a complete note library.</p>
+export function HomeContent() {
+  return (
+    <div className="content-container">
+      <div className="hero-container">
+        <h1 className="hero">
+          Hear Better. <br /> <em>Play</em> Better.
+        </h1>
+        <p className="hero__subtitle">
+          Develop confident pitch recognition with quizzes, endless challenges,
+          and a complete note library.
+        </p>
 
-                <div className="cta-btns">
-                    <button className="cta-button">Get Started</button>
-                    <button className = "secondary-cta-button">Sign in</button>
-                </div>
-
-            </div>
-
-            {/* <div className="about-container">
-                <h2 className="about-heading">
-                    About EarTrainer
-                </h2>
-
-
-                <p className="about-text">
-                    EarTrainer is an educational platform made to develop strong pitch recognition skills among 
-                    musicians through structured quizzes, randomized assessments, and a library for self-paced learning.
-                </p>
-            </div> */}
+        <div className="cta-btns">
+          <button className="cta-button">Get Started</button>
+          <button className="secondary-cta-button">Sign in</button>
         </div>
-
-    );
+      </div>
+    </div>
+  );
 }

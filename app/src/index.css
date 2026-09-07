@@ -53,6 +53,14 @@ body {
   -ms-overflow-style: none; 
 
   font-family:'Inter', sans-serif;
+
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-areas: 
+    "header"
+    "main"
+    "footer";
 }
 
 body::-webkit-scrollbar {
@@ -80,6 +88,8 @@ header {
   overflow-x: hidden;
 
   box-shadow: 0px 2px 12px 8px rgba(0, 0, 0, 0.25);
+
+  grid-area: header;
 }
 
 .nav-container {
@@ -157,9 +167,12 @@ a {
 }
 
 .content-container {
-  padding-bottom: 5%;
+
+  grid-area: main;
+
   background-color: var(--background-color);
-  min-height: 80dvh;
+  min-height: fit-content;
+  height: 100%;
   width: 100%;
 
   display: flex;
@@ -189,6 +202,8 @@ footer {
   display: flex;
   flex-direction: column;
   padding-top: 2%;
+
+  grid-area: footer;
 }
 
 .footer-links {
