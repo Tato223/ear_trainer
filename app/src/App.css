@@ -616,7 +616,7 @@ label {
   color: white;
 }
 
-.question-submit-btn {
+.question-submit-btn-active {
   height: 30px;
   width: 100px;
 
@@ -635,7 +635,34 @@ label {
 
   grid-column: 3;
 
+  transition: all ease 0.2s;
+
 }
+
+.question-submit-btn-inactive {
+  height: 30px;
+  width: 100px;
+
+  background-color: var(--accent-color);
+  color: black;
+  cursor: pointer;
+
+  border-radius: 8px;
+
+  background-color: var(--btn-inactive) !important;
+
+  margin: auto;
+
+  grid-column: 3;
+
+  pointer-events: none;
+
+}
+
+.question-submit-btn-inactive:hover {
+  transform: none;
+}
+
 
 .quiz-completion-text {
   text-align: center;

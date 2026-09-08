@@ -91,7 +91,8 @@ export function QuizPageContent() {
     <div className="content-container">
       <div className="quiz-text__container">
         <h2 className="quiz-text">{currentQuestion.text}</h2>
-        <SubmitQuestionButton onClick={selectedAnswer ? handleAnswer : null} />
+        <SubmitQuestionButton className={selectedAnswer? "question-submit-btn-active" : "question-submit-btn-inactive"}
+        onClick={selectedAnswer ? handleAnswer : null} />
       </div>
 
       <div className="quiz-img-container" onClick={toggleIsPlaying}>

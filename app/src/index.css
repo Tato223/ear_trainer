@@ -17,6 +17,8 @@
 
   --smooth-bgColor-transition : background-color 0.3s ease;
   --smooth-size-transition : transform 0.3s ease;
+
+  --btn-inactive : #4040404f;
 }
 
 @supports (font-variation-settings: normal) {

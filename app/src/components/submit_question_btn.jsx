@@ -1,7 +1,7 @@
-export default function SubmitQuestionButton({onClick}) {
+export default function SubmitQuestionButton({onClick, className}) {
     return(
         <>
-            <button className="question-submit-btn" onClick={onClick}>
+            <button className={className} onClick={onClick}>
                 Submit
             </button>
         </>
