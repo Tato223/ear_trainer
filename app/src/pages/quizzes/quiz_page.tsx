@@ -117,11 +117,8 @@ export function QuizPageContent() {
           <button
             key={note}
             className={
-              note === selectedAnswer
-                ? "quiz-option-btn__selected"
-                : "quiz-option-btn"
-            }
-            onClick={() => setSelectedAnswer(note)}
+              note === selectedAnswer ? "quiz-option-btn__selected" : "quiz-option-btn"}
+            onClick={() => selectedAnswer === note? setSelectedAnswer(null) : setSelectedAnswer(note)}
           >
             {note}
           </button>
