@@ -40,9 +40,7 @@ export interface QuizConfig
   quizEndpoint: string;
   defaultOctave: octave;
   noteLength: NoteLength;
-  optionsType: NaturalNote[] | Scale[] | Interval[] | PitchModifier[] | null;
-  answerType:  NaturalNote | Scale | Interval | PitchModifier | null;
-  questionText: string
+  questionText: string;
 };
 
 // Quiz Categories
@@ -56,8 +54,6 @@ export const PitchRecognitionQuiz: QuizConfig
   quizEndpoint: "/pitch_recognition",
   defaultOctave: 4,
   noteLength: 4,
-  optionsType: null,
-  answerType: null,
   questionText: "Select an answer choice to identify the note."
 };
 
@@ -70,8 +66,6 @@ export const MajorScalesQuiz: QuizConfig
   quizEndpoint: "/major_scales",
   defaultOctave: 4,
   noteLength: 8,
-  optionsType: null,
-  answerType: null,
   questionText: "Select an answer choice to identify the major scale."
 };
 
@@ -83,8 +77,6 @@ export const IntervalQuiz: QuizConfig
   quizEndpoint: "/intervals",
   defaultOctave: 4,
   noteLength: 4,
-  optionsType: null,
-  answerType: null,
   questionText: "Select an answer choice to identify the interval."
 };
 
@@ -97,8 +89,6 @@ export const IntonationQuiz: QuizConfig
   quizEndpoint: "/intonation",
   defaultOctave: 4,
   noteLength: 4,
-  optionsType: null,
-  answerType: null,
   questionText: "Select an answer choice to determine if the note is sharp, flat, or natural."
 };
 
