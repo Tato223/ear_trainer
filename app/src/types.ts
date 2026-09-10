@@ -1,4 +1,7 @@
-import { interval } from "tonal";
+import { interval, Pitch } from "tonal";
+import * as quizLogic from './quiz_logic';
+
+export const orderedNotes: Note[] = ["C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"] 
 
 // Custom Types
 
@@ -7,9 +10,10 @@ export type AccidentalNote = `${NaturalNote}#` | `${NaturalNote}b`;
 export type Note = NaturalNote | AccidentalNote;
 export type octave = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type interval = 2 | 4 | 5 | 7; // basic intervals for simplicity, expansion possible in the future
-export type PitchModifier = "Sharp" | "Flat" | "In Tune"
-
-export const orderedNotes: Note[] = ["C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"] 
+export type PitchModifier = "Sharp" | "Flat" | "In Tune";
+export type NoteLength = 1 | 2 | 4 | 8 | 16 | 32;
+export type QuizType = PitchRecognitionQuiz | MajorScalesQuiz |IntervalQuiz | IntonationQuiz;
+export type AudioPlaybackType = "SingleNote" | "SequenceOfNotes"
 
 export interface Scale {
   Name: string;
@@ -19,6 +23,64 @@ export interface Scale {
 export interface Interval {
   value: interval;
 }
+
+// Component props types
+
+export interface QuizProps {
+  quizType: QuizType;
+  maxQuestions: number;
+}
+
+// Quiz Categories
+
+export interface PitchRecognitionQuiz {
+  name: "PitchRecognitionQuiz";
+  audioPlaybackType: "SingeNote";
+  questionType: "PitchRecognitionQuestion";
+  quizEndpoint: "/pitch_recognition";
+  defaultOctave: 4;
+  noteLength: 4;
+  optionsType: NaturalNote;
+  answerType: NaturalNote;
+  questionText: "Select an answer choice to identify the note.";
+}
+
+export interface MajorScalesQuiz {
+  name: "MajorScalesQuiz";
+  audioPlaybackType: "SequenceOfNotes";
+  questionType: "MajorScaleQuestion";
+  quizEndpoint: "/major_scales";
+  defaultOctave: 4;
+  noteLength: 8;
+  optionsType: Scale[];
+  answerType: Scale;
+  questionText: "Select an answer choice to identify the major scale.";
+}
+
+export interface IntervalQuiz {
+  name: "IntervalsQuiz";
+  audioPlaybackType: "SequenceOfNotes";
+  questionType: "IntervalQuestion";
+  quizEndpoint: "/intervals";
+  defaultOctave: 4;
+  noteLength: 4;
+  optionsType: Interval[];
+  answerType: Interval;
+  questionText: "Select an answer choice to identify the interval.";
+}
+
+export interface IntonationQuiz {
+  name: "IntonationQuiz";
+  audioPlaybackType: "SingleNote";
+  questionType: "IntonationQuestion";
+  quizEndpoint: "/intonation";
+  defaultOctave: 4;
+  noteLength: 4;
+  optionsType: PitchModifier[];
+  answerType: PitchModifier;
+  questionText: "Select an answer choice to determine if the note is sharp, flat, or natural.";
+}
+
 
 // Question Categories
 
@@ -37,6 +99,7 @@ export interface PitchRecognitionQuestion {
   options: NaturalNote[];
   correctAnswer: NaturalNote;
   selectedAnswer: NaturalNote | null;
+  audioPlaybackType: "SingleNote";
 }
 
 export interface MajorScaleQuestion {
