@@ -33,7 +33,7 @@ export function QuizPageContent({
     typeof quizType.optionsType | null
   >(null);
 
-    const questionCreationFunctions = {
+  const questionCreationFunctions = {
     PitchRecognitionQuiz: quizLogic.createPitchRecognitionQuestion,
     MajorScalesQuiz: quizLogic.createMajorScaleQuestion,
     IntervalsQuiz: quizLogic.createIntervalQuestion,
@@ -49,13 +49,15 @@ export function QuizPageContent({
   }
 
   let createQuestion = getQuestionCreationFunction(quizType.name);
-  
+
   const [currentQuestion, setCurrentQuestion] = useState<any>(() =>
     createQuestion(quizType.questionText),
   );
 
   // play correct pitch
   useEffect(() => {
+    const synth = new tone.Synth().toDestination();
+
     if (quizType.name == "PitchRecognitionQuiz") {
       audioConfig.playSingleNote(
         currentQuestion,
@@ -63,10 +65,7 @@ export function QuizPageContent({
         quizType.defaultOctave,
         quizType.noteLength,
       );
-    }
-
-    if (quizType.name === "MajorScalesQuiz") {
-      const synth = new tone.Synth().toDestination();
+    } else if (quizType.name === "MajorScalesQuiz") {
       const correctScaleNotes: types.Note[] =
         currentQuestion.correctAnswer.Notes;
 
@@ -86,10 +85,7 @@ export function QuizPageContent({
           quizType.noteLength,
         );
       });
-    }
-
-    if (quizType.name === "IntervalsQuiz") {
-      const synth = new tone.Synth().toDestination();
+    } else if (quizType.name === "IntervalsQuiz") {
       const intervalNotes: types.Note[] = currentQuestion.intervalNotes;
       let octave: types.octave = quizType.defaultOctave;
       let prevOrderedIndex: null | number = null;
@@ -104,6 +100,14 @@ export function QuizPageContent({
           quizType.noteLength,
         );
       });
+    } else if (quizType.name === "IntonationQuiz") {
+      audioConfig.playNoteWithPitchModifer(
+        synth,
+        currentQuestion,
+        setIsPlaying,
+        quizType.defaultOctave,
+        quizType.noteLength,
+      );
     }
 
     // Add expressions for all other playback function types
@@ -185,5 +189,3 @@ export function QuizPageContent({
     </div>
   );
 }
-
-// Make variants for different playback types, then assign the audio function based on the quizType above

@@ -56,13 +56,14 @@ export function playScale(
 }
 
 export function playInterval(
-    note: types.Note,
-    prevOrderedIndex: number | null, 
-    index: number, 
-    octave: types.octave, 
-    synth: tone.Synth, 
-    noteLength: types.NoteLength, 
-    delayBetweenNotes: number = 0.75) {
+  note: types.Note,
+  prevOrderedIndex: number | null,
+  index: number,
+  octave: types.octave,
+  synth: tone.Synth,
+  noteLength: types.NoteLength,
+  delayBetweenNotes: number = 0.75,
+) {
   let currOrderedIndex = types.orderedNotes.indexOf(note);
   prevOrderedIndex && currOrderedIndex < prevOrderedIndex ? octave++ : null;
 
@@ -72,6 +73,31 @@ export function playInterval(
   prevOrderedIndex = currOrderedIndex;
 }
 
-// playIntonationNote() {
-    
-// }
+export function playNoteWithPitchModifer(
+  synth: tone.Synth,
+  currentQuestion: any,
+  setIsPlaying: Function,
+  defaultOctave: types.octave,
+  noteLength: types.NoteLength,
+) {
+  // Determines how to adjust the pitch depending on the correct answer
+  let modifier = 0;
+  if (currentQuestion.correctAnswer === "Flat") {
+    modifier = -40;
+  } else if (currentQuestion.correctAnswer === "Sharp") {
+    modifier = +40;
+  }
+
+  //adjust the pitch using the modifier
+  synth.detune.value = modifier;
+
+  synth.triggerAttackRelease(
+    currentQuestion.noteToPlay + defaultOctave,
+    noteLength,
+  );
+
+  return () => {
+    synth.dispose();
+    setIsPlaying(false);
+  };
+}
