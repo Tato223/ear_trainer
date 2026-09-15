@@ -10,7 +10,7 @@ export type Note = NaturalNote | AccidentalNote;
 export type octave = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type interval = 2 | 4 | 5 | 7; // basic intervals for simplicity, expansion possible in the future
 export type PitchModifier = "Sharp" | "Flat" | "In Tune";
-export type NoteLength = 1 | 2 | 4 | 8 | 16 | 32;
+export type NoteDurationSeconds = 1 | 0.5 | 0.4;
 export type QuizType = "PitchRecognitionQuiz" | "MajorScalesQuiz" | "IntervalsQuiz" | "IntonationQuiz";
 export type AudioPlaybackType = "SingleNote" | "SequenceOfNotes"
 export type QuestionType = "PitchRecognitionQuestion"| "MajorScaleQuestion" | "IntervalQuestion" | "IntonationQuestion";
@@ -39,7 +39,7 @@ export interface QuizConfig
   questionType: QuestionType;
   quizEndpoint: string;
   defaultOctave: octave;
-  noteLength: NoteLength;
+  noteDurationSeconds: NoteDurationSeconds;
   optionsType: NaturalNote[] | Scale[] | Interval[] | PitchModifier[] | null;
   answerType:  NaturalNote | Scale | Interval | PitchModifier | null;
   questionText: string
@@ -55,7 +55,7 @@ export const PitchRecognitionQuiz: QuizConfig
   questionType: "PitchRecognitionQuestion",
   quizEndpoint: "/pitch_recognition",
   defaultOctave: 4,
-  noteLength: 4,
+  noteDurationSeconds: .5,
   optionsType: null,
   answerType: null,
   questionText: "Select an answer choice to identify the note."
@@ -69,7 +69,7 @@ export const MajorScalesQuiz: QuizConfig
   questionType: "MajorScaleQuestion",
   quizEndpoint: "/major_scales",
   defaultOctave: 4,
-  noteLength: 8,
+  noteDurationSeconds: 0.4,
   optionsType: null,
   answerType: null,
   questionText: "Select an answer choice to identify the major scale."
@@ -82,7 +82,7 @@ export const IntervalQuiz: QuizConfig
   questionType: "IntervalQuestion",
   quizEndpoint: "/intervals",
   defaultOctave: 4,
-  noteLength: 4,
+  noteDurationSeconds: 0.5,
   optionsType: null,
   answerType: null,
   questionText: "Select an answer choice to identify the interval."
@@ -96,7 +96,7 @@ export const IntonationQuiz: QuizConfig
   questionType: "IntonationQuestion",
   quizEndpoint: "/intonation",
   defaultOctave: 4,
-  noteLength: 4,
+  noteDurationSeconds: 0.5,
   optionsType: null,
   answerType: null,
   questionText: "Select an answer choice to determine if the note is sharp, flat, or natural."
@@ -127,7 +127,6 @@ export interface PitchRecognitionQuestion {
   options: NaturalNote[];
   correctAnswer: NaturalNote;
   selectedAnswer: NaturalNote | null;
-  audioPlaybackType: "SingleNote";
 }
 
 export interface MajorScaleQuestion {

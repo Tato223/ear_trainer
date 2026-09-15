@@ -1,28 +1,13 @@
-import Header from "../../components/header.jsx";
-import Footer from "../../components/footer.jsx";
-import SubmitQuestionButton from "../../components/submit_question_btn.jsx";
-import * as quizLogic from "../../quiz_logic.ts";
-import * as types from "../../types.ts";
+import SubmitQuestionButton from "../components/submit_question_btn.jsx";
+import * as quizLogic from "../quiz_logic.ts";
+import * as types from "../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
 import { Navigate } from "react-router";
-import SpeakerButton from "../../components/speaker_button.jsx";
-import * as audioConfig from "../../audio_config.ts";
+import SpeakerButton from "../components/speaker_button.jsx";
+import * as audioConfig from "../audio_config.ts";
 
-export default function QuizPage() {
-  return (
-    <>
-      <Header />
-      <QuizPageContent
-        quizType={types.PitchRecognitionQuiz}
-        maxQuestions={10}
-      />
-      <Footer />
-    </>
-  );
-}
-
-export function QuizPageContent({
+export default function QuizPageContent({
   quizType,
   maxQuestions = 10,
 }: types.QuizProps) {
@@ -56,39 +41,43 @@ export function QuizPageContent({
 
   // play correct pitch
   useEffect(() => {
+
+    if (isPlaying) return;
+
     const synth = new tone.Synth().toDestination();
 
-    if (quizType.name == "PitchRecognitionQuiz") {
+    if (quizType.name == "PitchRecognitionQuiz" && !isPlaying) {
       audioConfig.playSingleNote(
         currentQuestion,
         setIsPlaying,
         quizType.defaultOctave,
-        quizType.noteLength,
+        quizType.noteDurationSeconds,
       );
-    } else if (quizType.name === "MajorScalesQuiz") {
+      
+    } else if (quizType.name === "MajorScalesQuiz" && !isPlaying) {
+
       const correctScaleNotes: types.Note[] =
         currentQuestion.correctAnswer.Notes;
 
-      let prevOrderedIndex: number | null = null;
-      const seenBorBb: types.Note[] = [];
-      const seenNotes: types.Note[] = [];
+      let seenBorBb: types.Note[] = []
+      let seenNotes: types.Note[] = []
 
       correctScaleNotes.forEach((note: types.Note, index: number) => {
         audioConfig.playScale(
+          note,
+          index,
+          quizType.defaultOctave,
+          quizType.noteDurationSeconds,
           seenBorBb,
           seenNotes,
-          note,
-          prevOrderedIndex,
-          index,
-          synth,
-          quizType.defaultOctave,
-          quizType.noteLength,
-        );
-      });
-    } else if (quizType.name === "IntervalsQuiz") {
+          setIsPlaying
+        );}
+    )
+      
+    } else if (quizType.name === "IntervalsQuiz" && !isPlaying) {
       const intervalNotes: types.Note[] = currentQuestion.intervalNotes;
       let octave: types.octave = quizType.defaultOctave;
-      let prevOrderedIndex: null | number = null;
+      let prevOrderedIndex: null | number = 0;
 
       intervalNotes.forEach((note, index) => {
         audioConfig.playInterval(
@@ -97,20 +86,24 @@ export function QuizPageContent({
           index,
           octave,
           synth,
-          quizType.noteLength,
+          quizType.noteDurationSeconds,
         );
       });
-    } else if (quizType.name === "IntonationQuiz") {
+
+    } else if (quizType.name === "IntonationQuiz" && !isPlaying) {
       audioConfig.playNoteWithPitchModifer(
         synth,
         currentQuestion,
         setIsPlaying,
         quizType.defaultOctave,
-        quizType.noteLength,
+        quizType.noteDurationSeconds,
       );
     }
 
-    // Add expressions for all other playback function types
+    return () => {
+      synth.dispose()
+      setIsPlaying(false)
+    }
   }, [currentQuestion, isPlaying]);
 
   const quizData = {
@@ -143,10 +136,9 @@ export function QuizPageContent({
   }
 
   function nextQuestion() {
-    setCurrentQuestion(
-      quizLogic.createPitchRecognitionQuestion(quizType.questionText),
-    );
+    setCurrentQuestion(createQuestion());
   }
+
   function toggleIsPlaying() {
     isPlaying ? setIsPlaying(false) : setIsPlaying(true);
   }
@@ -182,7 +174,9 @@ export function QuizPageContent({
                 : setSelectedAnswer(option)
             }
           >
-            {option.toString()}
+            {typeof option === typeof types.A_Major_Scale
+              ? option.Name
+              : option.toString()}
           </button>
         ))}
       </div>

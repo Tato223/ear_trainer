@@ -5,12 +5,12 @@ export function playSingleNote(
   currentQuestion: any,
   setIsPlaying: Function,
   defaultOctave: types.octave,
-  noteLength: types.NoteLength,
+  noteDurationSeconds: types.NoteDurationSeconds,
 ) {
   const synth = new tone.Synth().toDestination();
   synth.triggerAttackRelease(
     currentQuestion.correctAnswer + defaultOctave,
-    `${noteLength}n`,
+    `${noteDurationSeconds}n`,
   );
 
   return () => {
@@ -20,15 +20,19 @@ export function playSingleNote(
 }
 
 export function playScale(
+  note: types.Note,
+  index: number,
+  // synth: tone.Synth,
+  defaultOctave: types.octave,
+  noteDurationSeconds: types.NoteDurationSeconds,
   seenBorBb: types.Note[],
   seenNotes: types.Note[],
-  note: types.Note,
-  prevOrderedIndex: number | null,
-  index: number,
-  synth: tone.Synth,
-  defaultOctave: types.octave,
-  noteLength: types.NoteLength,
-): void {
+  setIsPlaying: Function
+) {
+  const synth = new tone.Synth().toDestination();
+
+  let prevOrderedIndex: number | null = null;
+
   let octave = defaultOctave;
   let currOrderedIndex = types.orderedNotes.indexOf(note);
   const indexOfBb = 15;
@@ -46,13 +50,22 @@ export function playScale(
   prevOrderedIndex = currOrderedIndex;
   const scheduledTime = tone.now() + index * 0.25;
 
-  synth.triggerAttackRelease(`${note}${octave}`, noteLength, scheduledTime);
+  synth.triggerAttackRelease(
+    `${note}${octave}`,
+    noteDurationSeconds,
+    scheduledTime,
+  );
 
   if (note === "B" || note === "Bb") {
     seenBorBb.push(note);
   }
 
   seenNotes.push(note);
+
+  return () => {
+    synth.dispose();
+    setIsPlaying(false);
+  };
 }
 
 export function playInterval(
@@ -61,14 +74,18 @@ export function playInterval(
   index: number,
   octave: types.octave,
   synth: tone.Synth,
-  noteLength: types.NoteLength,
+  noteDurationSeconds: types.NoteDurationSeconds,
   delayBetweenNotes: number = 0.75,
 ) {
   let currOrderedIndex = types.orderedNotes.indexOf(note);
   prevOrderedIndex && currOrderedIndex < prevOrderedIndex ? octave++ : null;
 
   const scheduledTime = tone.now() + index * delayBetweenNotes;
-  synth.triggerAttackRelease(`${note}${octave}`, noteLength, scheduledTime);
+  synth.triggerAttackRelease(
+    `${note}${octave}`,
+    noteDurationSeconds,
+    scheduledTime,
+  );
 
   prevOrderedIndex = currOrderedIndex;
 }
@@ -78,7 +95,7 @@ export function playNoteWithPitchModifer(
   currentQuestion: any,
   setIsPlaying: Function,
   defaultOctave: types.octave,
-  noteLength: types.NoteLength,
+  noteDurationSeconds: types.NoteDurationSeconds,
 ) {
   // Determines how to adjust the pitch depending on the correct answer
   let modifier = 0;
@@ -93,7 +110,7 @@ export function playNoteWithPitchModifer(
 
   synth.triggerAttackRelease(
     currentQuestion.noteToPlay + defaultOctave,
-    noteLength,
+    noteDurationSeconds,
   );
 
   return () => {

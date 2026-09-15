@@ -18,7 +18,7 @@ import LeaderboardPage from "./pages/nav_pages/leaderboard_page";
 import LibraryPage from "./pages/nav_pages/library_page";
 import SignupPage from "./pages/sign_up_page";
 import LoginPage from "./pages/login_page";
-import QuizPage from "./pages/quizzes/quiz_page";
+import QuizPage from "./pages/quizzes/pitch_recognition_quiz";
 import ScaleQuizPage from "./pages/quizzes/scale_quiz_page";
 import IntervalQuizPage from "./pages/quizzes/interval_quiz_page";
 import QuizCompletePage from "./pages/quiz_complete_page";

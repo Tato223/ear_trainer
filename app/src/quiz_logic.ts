@@ -1,5 +1,6 @@
 import { Interval } from "tonal";
 
+
 import {
   NaturalNote,
   IntervalQuestion,
@@ -26,7 +27,7 @@ export function createPitchRecognitionQuestion(
     options: options,
     isAnswered: false,
     correctAnswer: correctAnswer,
-    selectedAnswer: null,
+    selectedAnswer: null
   };
 
   return question;
