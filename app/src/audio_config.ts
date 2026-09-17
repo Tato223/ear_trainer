@@ -20,47 +20,50 @@ export function playSingleNote(
 }
 
 export function playScale(
-  note: types.Note,
-  index: number,
-  // synth: tone.Synth,
+  currentQuestion: types.MajorScaleQuestion,
   defaultOctave: types.octave,
   noteDurationSeconds: types.NoteDurationSeconds,
-  seenBorBb: types.Note[],
-  seenNotes: types.Note[],
-  setIsPlaying: Function
+  setIsPlaying: Function,
 ) {
+  const seenBorBb: types.Note[] = [];
+  const seenNotes: types.Note[] = [];
   const synth = new tone.Synth().toDestination();
 
   let prevOrderedIndex: number | null = null;
 
   let octave = defaultOctave;
-  let currOrderedIndex = types.orderedNotes.indexOf(note);
   const indexOfBb = 15;
 
-  if (
-    (prevOrderedIndex && currOrderedIndex < prevOrderedIndex) ||
-    (currOrderedIndex < indexOfBb && seenBorBb.length > 0) ||
-    seenNotes.includes(note)
-  ) {
-    octave++;
-  } else {
-    octave = defaultOctave;
-  }
+  const correctNotes: types.Note[] = currentQuestion.correctAnswer.Notes;
 
-  prevOrderedIndex = currOrderedIndex;
-  const scheduledTime = tone.now() + index * 0.25;
+  correctNotes.forEach((note: types.Note, index: number) => {
+    let currOrderedIndex = types.orderedNotes.indexOf(note);
 
-  synth.triggerAttackRelease(
-    `${note}${octave}`,
-    noteDurationSeconds,
-    scheduledTime,
-  );
+    if (
+      (prevOrderedIndex && currOrderedIndex < prevOrderedIndex) ||
+      (currOrderedIndex < indexOfBb && seenBorBb.length > 0) ||
+      seenNotes.includes(note)
+    ) {
+      octave = defaultOctave + 1;
+    } else {
+      octave = defaultOctave;
+    }
 
-  if (note === "B" || note === "Bb") {
-    seenBorBb.push(note);
-  }
+    prevOrderedIndex = currOrderedIndex;
+    const scheduledTime = tone.now() + index * 0.25;
 
-  seenNotes.push(note);
+    synth.triggerAttackRelease(
+      `${note}${octave}`,
+      noteDurationSeconds,
+      scheduledTime,
+    );
+
+    if (note === "B" || note === "Bb") {
+      seenBorBb.push(note);
+    }
+
+    seenNotes.push(note);
+  });
 
   return () => {
     synth.dispose();
@@ -69,25 +72,37 @@ export function playScale(
 }
 
 export function playInterval(
-  note: types.Note,
-  prevOrderedIndex: number | null,
-  index: number,
-  octave: types.octave,
-  synth: tone.Synth,
+  currentQuestion: types.IntervalQuestion,
+  defaultOctave: types.octave,
   noteDurationSeconds: types.NoteDurationSeconds,
   delayBetweenNotes: number = 0.75,
+  setIsPlaying: Function
 ) {
-  let currOrderedIndex = types.orderedNotes.indexOf(note);
-  prevOrderedIndex && currOrderedIndex < prevOrderedIndex ? octave++ : null;
+  const answerNotes: types.Note[] = currentQuestion.intervalNotes;
+  const synth = new tone.Synth().toDestination();
+  let prevOrderedIndex: number | null = null;
 
-  const scheduledTime = tone.now() + index * delayBetweenNotes;
-  synth.triggerAttackRelease(
-    `${note}${octave}`,
-    noteDurationSeconds,
-    scheduledTime,
-  );
+  answerNotes.forEach((note, index) => {
+    let octave = defaultOctave;
+    let currOrderedIndex = types.orderedNotes.indexOf(note);
+    prevOrderedIndex && currOrderedIndex < prevOrderedIndex
+      ? (octave = defaultOctave + 1)
+      : (octave = defaultOctave);
 
-  prevOrderedIndex = currOrderedIndex;
+    const scheduledTime = tone.now() + index * delayBetweenNotes;
+    synth.triggerAttackRelease(
+      `${note}${octave}`,
+      noteDurationSeconds,
+      scheduledTime,
+    );
+
+    prevOrderedIndex = currOrderedIndex;
+  });
+
+   return () => {
+    synth.dispose();
+    setIsPlaying(false);
+  };
 }
 
 export function playNoteWithPitchModifer(

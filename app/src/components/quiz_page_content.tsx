@@ -39,9 +39,10 @@ export default function QuizPageContent({
     createQuestion(quizType.questionText),
   );
 
+  console.log(currentQuestion.options);
+
   // play correct pitch
   useEffect(() => {
-
     if (isPlaying) return;
 
     const synth = new tone.Synth().toDestination();
@@ -53,42 +54,24 @@ export default function QuizPageContent({
         quizType.defaultOctave,
         quizType.noteDurationSeconds,
       );
-      
+
     } else if (quizType.name === "MajorScalesQuiz" && !isPlaying) {
+      audioConfig.playScale(
+        currentQuestion,
+        quizType.defaultOctave,
+        quizType.noteDurationSeconds,
+        setIsPlaying,
+      );
 
-      const correctScaleNotes: types.Note[] =
-        currentQuestion.correctAnswer.Notes;
+    } else if (quizType.name === "IntervalsQuiz" && !isPlaying) {
 
-      let seenBorBb: types.Note[] = []
-      let seenNotes: types.Note[] = []
-
-      correctScaleNotes.forEach((note: types.Note, index: number) => {
-        audioConfig.playScale(
-          note,
-          index,
+        audioConfig.playInterval(
+          currentQuestion,
           quizType.defaultOctave,
           quizType.noteDurationSeconds,
-          seenBorBb,
-          seenNotes,
+          0.75,
           setIsPlaying
-        );}
-    )
-      
-    } else if (quizType.name === "IntervalsQuiz" && !isPlaying) {
-      const intervalNotes: types.Note[] = currentQuestion.intervalNotes;
-      let octave: types.octave = quizType.defaultOctave;
-      let prevOrderedIndex: null | number = 0;
-
-      intervalNotes.forEach((note, index) => {
-        audioConfig.playInterval(
-          note,
-          prevOrderedIndex,
-          index,
-          octave,
-          synth,
-          quizType.noteDurationSeconds,
         );
-      });
 
     } else if (quizType.name === "IntonationQuiz" && !isPlaying) {
       audioConfig.playNoteWithPitchModifer(
@@ -101,9 +84,9 @@ export default function QuizPageContent({
     }
 
     return () => {
-      synth.dispose()
-      setIsPlaying(false)
-    }
+      synth.dispose();
+      setIsPlaying(false);
+    };
   }, [currentQuestion, isPlaying]);
 
   const quizData = {
@@ -120,6 +103,10 @@ export default function QuizPageContent({
   }
 
   function handleAnswer() {
+
+    console.log(selectedAnswer)
+    console.log(currentQuestion.correctAnswer)
+
     if (selectedAnswer === currentQuestion.correctAnswer) {
       setQuestionsCorrect(questionsCorrect + 1);
     }
@@ -130,6 +117,8 @@ export default function QuizPageContent({
       isAnswered: true,
       selectedAnswer: selectedAnswer,
     }));
+
+    console.log(questionsCorrect)
 
     nextQuestion();
     setSelectedAnswer(null);
@@ -162,7 +151,9 @@ export default function QuizPageContent({
       <div className="quiz-options-container">
         {currentQuestion.options.map((option: any) => (
           <button
-            key={option}
+            key={typeof option === typeof types.A_Major_Scale
+              ? option.Name
+              : option.toString()}
             className={
               option === selectedAnswer
                 ? "quiz-option-btn__selected"
