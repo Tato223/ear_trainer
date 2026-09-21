@@ -223,7 +223,7 @@ footer {
 
 button {
   color: var(--background-color);
-  transition: var(--smooth-size-transition);
+  transition: all 0.5s ease;
   border-style: none;
 }
 
@@ -232,4 +232,5 @@ button:hover {
   background-color: var(--accent-color-selected);
   transition: var(--smooth-bgColor-transition);
   transition: var(--smooth-size-transition);
+  transition: all 0.5s ease;
 }

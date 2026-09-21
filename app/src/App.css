@@ -202,12 +202,14 @@ h2 {
   font-size: clamp(1em, 4vw + 1.5em, 1.5em);
   color: var(--secondary-color);
   text-decoration: underline;
+  pointer-events: none;
 }
 
 .quiz-card__text {
   padding: 0% 15% 0% 15%;
   text-align: center;
   color: var(--subtitle-color);
+  pointer-events: none;
 }
 
 .quiz-card__button {
@@ -357,46 +359,117 @@ h2 {
   color: var(--accent-color);
 }
 
-.library-options-container {
-  width: 80dvw;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-self: center;
-  gap: 80px;
+/* LIBRARY PAGE */
 
-  justify-content: center;
-  padding-bottom: 2%;
+.library-body {
+  margin: 2% 0% 2% 0%;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 90%;
+  min-height: 100%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+
+  border: 2px solid var(--heading-color);
+  border-radius: 12px;
+  gap: 2.5%;
 }
 
-.library-option-card {
-  margin-top: 2%;
-
-  border-radius: 24px;
-
-  width: 400px;
-  height: 450px;
-
+.library-mode-toggle {
+  width: 30%;
+  display: flex;
+  align-self: center;
+  justify-content: space-around;
+  border-radius: 16px;
   background-color: var(--card-color);
+  margin-top: 1%;
+}
+
+.vertical-divider {
+  display: inline-block;
+  width: 2px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.library-mode-toggle > button {
+  padding: 2.5%;
+  background-color: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.5s ease;
+  width: 50%;
+  font-size: 1em;
+  border-radius: inherit;
+
+}
+
+.library-mode-toggle > button.active {
+  color: var(--accent-color-selected);
+  font-size: 1.15em;
+}
+
+.library-selector {
+  display: flex;
+  width: 70%;
+  align-self: center;
+  justify-content: center;
+  gap: 2%;
+}
+
+.library-entry-btn {
+  padding: 1% 2.5% 1% 2.5%;
+  text-align: center;
+  border-radius: 24px;
+  background-color: var(--card-color);
+  color: var(--secondary-color);
+  width: 10%;
+}
+
+.library-entry-btn:hover {
+  background-color: var(--card-color) !important;
+  transform: scale(1.15);
+  transition: all 0.5s ease;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.library-entry-btn.selected {
+  color: var(--primary-color);
+  transform: scale(1.2);
+  font-weight: 600;
+  border: .5px var(--secondary-color) solid;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.5);
+}
+
+.library-detail-card {
+  background-color: var(--card-color);
+  width: 50%;
+  height: 40%;
+  padding: 2.5%;
+  align-self: center;
+  border-radius: 12px;
 
   display: flex;
   flex-direction: column;
-
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  gap: 10%;
+  color: var(--secondary-color);
 }
 
-.library-option-card:hover {
-  cursor: pointer;
-  transform: scale(1.025);
-}
-
-.library-card__text {
-  font-size: 2em;
+.library-detail-card > h3 {
+  font-size: 1.5em;
+  color: var(--primary-color);
   text-align: center;
+}
+
+.library-play-btn {
+  width: 20%;
+  height: 20%;
+  border-radius: 24px;
+  background-image: linear-gradient(var(--accent-color-gradient), var(--accent-color));
+  cursor: pointer;
   margin-top: auto;
-  margin-bottom: 10%;
-  color: var(--accent-color);
-  text-decoration: underline;
+  margin-left: auto;
 }
 
 .signup-container,
