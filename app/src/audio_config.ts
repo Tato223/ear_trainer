@@ -71,6 +71,51 @@ export function playScale(
   };
 }
 
+export function playScaleLibrary(scale: types.Scale): void {
+  const defaultOctave: types.octave = 4;
+  const seenBorBb: types.Note[] = [];
+  const seenNotes: types.Note[] = [];
+  const synth = new tone.Synth().toDestination();
+
+  let prevOrderedIndex: number | null = null;
+
+  let octave = defaultOctave;
+  const indexOfBb = 15;
+
+  const correctNotes: types.Note[] = scale.Notes;
+
+  const noteDurationSeconds: types.NoteDurationSeconds = 0.4;
+
+  correctNotes.forEach((note: types.Note, index: number) => {
+    let currOrderedIndex = types.orderedNotes.indexOf(note);
+
+    if (
+      (prevOrderedIndex && currOrderedIndex < prevOrderedIndex) ||
+      (currOrderedIndex < indexOfBb && seenBorBb.length > 0) ||
+      seenNotes.includes(note)
+    ) {
+      octave = defaultOctave + 1;
+    } else {
+      octave = defaultOctave;
+    }
+
+    prevOrderedIndex = currOrderedIndex;
+    const scheduledTime = tone.now() + index * 0.25;
+
+    synth.triggerAttackRelease(
+      `${note}${octave}`,
+      noteDurationSeconds,
+      scheduledTime,
+    );
+
+    if (note === "B" || note === "Bb") {
+      seenBorBb.push(note);
+    }
+
+    seenNotes.push(note);
+  });
+}
+
 export function playInterval(
   currentQuestion: types.IntervalQuestion,
   defaultOctave: types.octave,

@@ -6,6 +6,8 @@ import LibraryDetailCard from "../library/library_detail_card";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import { noteLibrary, scaleLibrary} from "../library/library_data";
+import {playScaleLibrary} from "../../audio_config";
+import { orderedNotes } from "../../types";
 
 export default function LibraryPage() {
   return (
@@ -34,9 +36,7 @@ export function LibraryContent() {
     if (entry.kind === "note") {
       synth.triggerAttackRelease(`${entry.note}4`, "2n");
     } else {
-      entry.scale.Notes.forEach((note, index) => {
-        synth.triggerAttackRelease(`${note}4`, "8n", tone.now() + index * 0.25);
-      });
+      playScaleLibrary(entry.scale);
     }
 
     // Dispose after the audio has had time to finish playing.
