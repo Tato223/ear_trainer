@@ -10,7 +10,8 @@ export default function LibrarySelector({ entries, selectedEntry, onSelect }: Li
   return (
     <div className="library-selector">
       {entries.map((entry) => {
-        const label = entry.kind === "note" ? entry.note : entry.scale.Name;
+        const label = entry.kind === "note" ? ( entry.displayName ?? entry.note ) : (entry.scale.Name ?? entry.displayName);
+        console.log("Entry label:", label);
         const isSelected =
           selectedEntry !== null &&
           ((entry.kind === "note" && selectedEntry.kind === "note" && entry.note === selectedEntry.note) ||
