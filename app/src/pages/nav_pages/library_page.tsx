@@ -7,7 +7,6 @@ import Header from "../../components/header";
 import Footer from "../../components/footer";
 import { noteLibrary, scaleLibrary} from "../library/library_data";
 import {playScaleLibrary} from "../../audio_config";
-import { orderedNotes } from "../../types";
 
 export default function LibraryPage() {
   return (
