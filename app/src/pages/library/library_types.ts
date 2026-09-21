@@ -2,6 +2,7 @@ import { Note, Scale } from "../../types";
 
 export interface NoteLibraryEntry {
   kind: "note";
+  displayName?: string;
   note: Note;
   standardFrequencyHz: number;
   description: string;
@@ -10,6 +11,7 @@ export interface NoteLibraryEntry {
 
 export interface ScaleLibraryEntry {
   kind: "scale";
+  displayName?: string;
   scale: Scale;
   description: string;
   culturalReferences?: string[];

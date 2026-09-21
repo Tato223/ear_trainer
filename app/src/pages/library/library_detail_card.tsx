@@ -6,7 +6,7 @@ interface LibraryDetailCardProps {
 }
 
 export default function LibraryDetailCard({ entry, onPlay }: LibraryDetailCardProps) {
-  const title = entry.kind === "note" ? entry.note : entry.scale.Name;
+  const title = entry.kind === "note" ? entry.note ?? entry.displayName : entry.scale.Name ?? entry.displayName;
 
   return (
     <div className="library-detail-card">
