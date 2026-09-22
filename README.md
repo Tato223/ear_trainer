@@ -23,6 +23,7 @@ high scores, and access the scales and notes library.
 
 - **Frontend:** React, React Router, Vite, JavaScript, and TypeScript
 - **Audio:** Tone.js
+- **Visuals:** VexFlow
 - **Backend:** Django and Django REST Framework
 - **Authentication:** Django REST Framework token authentication
 - **Database:** SQLite for local development
