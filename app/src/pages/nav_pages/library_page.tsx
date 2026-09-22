@@ -5,8 +5,8 @@ import LibrarySelector from "../library/library_selector";
 import LibraryDetailCard from "../library/library_detail_card";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
-import { noteLibrary, scaleLibrary} from "../library/library_data";
-import {playScaleLibrary} from "../../audio_config";
+import { noteLibrary, scaleLibrary } from "../library/library_data";
+import { playScaleLibrary } from "../../audio_config";
 
 export default function LibraryPage() {
   return (
@@ -46,11 +46,7 @@ export function LibraryContent() {
 
   return (
     <div className="content-container">
-      {/* <h2 className="library-instructions">Note &amp; Scale Library</h2> */}
-
-
       <div className="library-body">
-
         <div className="library-mode-toggle">
           <button
             className={mode === "notes" ? "active" : ""}
@@ -67,7 +63,7 @@ export function LibraryContent() {
           >
             Scales
           </button>
-      </div>
+        </div>
 
         <LibrarySelector
           entries={entries}
@@ -76,10 +72,12 @@ export function LibraryContent() {
         />
 
         {selectedEntry && (
-          <LibraryDetailCard entry={selectedEntry} onPlay={() => playEntry(selectedEntry)} />
+          <LibraryDetailCard
+            entry={selectedEntry}
+            onPlay={() => playEntry(selectedEntry)}
+          />
         )}
       </div>
     </div>
   );
 }
-
