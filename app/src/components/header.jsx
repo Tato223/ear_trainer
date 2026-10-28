@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useAuth } from "../auth_context";
+import { useEffect } from "react";
 
 // Later fetch from users API endpoint
 // let isLoggedIn = false;
@@ -13,10 +14,16 @@ import { useAuth } from "../auth_context";
 - PRIVACY POLICY & TOS
 */
 
-function Header() {
+export default function Header() {
   const { user, isLoading, logout } = useAuth();
 
-  if (isLoading) {return null};
+  const checkIsLoggedIn = useEffect(() => {
+    console.log("User login status changed:", user);
+  }, [user]);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <header user={user}>
@@ -32,8 +39,7 @@ function Header() {
           <Link to="/library">Library</Link>
 
           {user ? (
-            // change to /me later
-            <Link to="/auth/login">
+            <Link to={`/users/${user?.username}`}>
               <img className="user-pfp__header" src="https://placehold.co/40" />
             </Link>
           ) : (
@@ -46,5 +52,3 @@ function Header() {
     </header>
   );
 }
-
-export default Header;

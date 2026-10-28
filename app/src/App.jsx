@@ -27,6 +27,7 @@ import EndlessScalesPage from "./pages/endless_pages/endless_major_scales";
 import EndlessIntervalsPage from "./pages/endless_pages/endless_intervals";
 import IntonationQuizPage from "./pages/quizzes/intonation_quiz_page";
 import EndlessIntonationPage from "./pages/endless_pages/endless_intonation";
+import ProfilePage from "./pages/profile_page";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -56,6 +57,9 @@ const router = createBrowserRouter([
   //auth
   { path: "/auth/signup/", element: <SignupPage /> },
   { path: "/auth/login/", element: <LoginPage /> },
+
+  //profile
+  { path: "/users/:username", element: <ProfilePage /> },
 ]);
 
 function App() {
