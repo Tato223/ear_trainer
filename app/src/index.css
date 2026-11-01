@@ -1,28 +1,30 @@
 :root {
-  --background-color : #14161f;
-  --primary-color : #f2ede2;
-  --secondary-color : #9aa0b4;
-  --header-color : #1c2030;
+  --background-color: #14161f;
+  --primary-color: #f2ede2;
+  --secondary-color: #9aa0b4;
+  --header-color: #1c2030;
 
-  --subtitle-color : #6c88a8;
+  --subtitle-color: #6c88a8;
 
-  --accent-color : #c89b5c;
-  --accent-color-selected : #d6ae77;
-  --accent-color-gradient : #dfc272;
+  --accent-color: #c89b5c;
+  --accent-color-selected: #d6ae77;
+  --accent-color-gradient: #dfc272;
 
-  --card-color : #1c2030;
+  --card-color: #1c2030;
 
-    font-family: Inter, sans-serif;
-    font-feature-settings: 'liga' 1, 'calt' 1;
+  font-family: Inter, sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1;
 
-  --smooth-bgColor-transition : background-color 0.3s ease;
-  --smooth-size-transition : transform 0.3s ease;
+  --smooth-bgColor-transition: background-color 0.3s ease;
+  --smooth-size-transition: transform 0.3s ease;
 
-  --btn-inactive : #4040404f;
+  --btn-inactive: #4040404f;
 }
 
 @supports (font-variation-settings: normal) {
-  :root { font-family: InterVariable, sans-serif; }
+  :root {
+    font-family: InterVariable, sans-serif;
+  }
 }
 
 html {
@@ -38,7 +40,8 @@ h1 {
   font-size: clamp(1em, 1.5em, 1.5em);
 }
 
-h2, .nav-links > a {
+h2,
+.nav-links>a {
   color: var(--secondary-color);
 }
 
@@ -51,15 +54,15 @@ body {
   padding: 0px;
   min-height: 100dvh;
   scrollbar-width: none;
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
-  font-family:'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-template-rows: repeat(1, 1fr);
-  grid-template-areas: 
+  grid-template-areas:
     "header"
     "main"
     "footer";
@@ -72,7 +75,7 @@ body::-webkit-scrollbar {
 header {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 10;
 
   background-color: var(--card-color);
 
@@ -106,7 +109,7 @@ header {
   font-size: 2.5em;
   font-weight: bolder;
 
-  font-family:'Fraunces', serif;
+  font-family: 'Fraunces', serif;
   color: var(--accent-color);
 }
 
@@ -122,11 +125,11 @@ header {
   transition: color 0.25s ease;
 }
 
-.nav-links > a {
+.nav-links>a {
   transition: color 0.25s ease;
 }
 
-.nav-links > a:hover {
+.nav-links>a:hover {
   color: var(--primary-color);
   transition: color 0.25s ease;
   cursor: pointer;
@@ -180,10 +183,10 @@ a {
   display: flex;
   flex-direction: column;
 
-  background-image : 
-      radial-gradient(ellipse 900px 500px at 78% 15%, rgba(200,155,92,0.08), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 10% 85%, rgba(108,136,168,0.06), transparent 60%);
-      
+  background-image:
+    radial-gradient(ellipse 900px 500px at 78% 15%, rgba(200, 155, 92, 0.08), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 10% 85%, rgba(108, 136, 168, 0.06), transparent 60%);
+
 }
 
 hr {

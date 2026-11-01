@@ -4,11 +4,40 @@ import Footer from "../components/footer";
 import Header from "../components/header";
 
 export default function ProfilePage() {
-  const { user }: { user: any } = useAuth();
+  const { user } = useAuth();
 
   if (!user) return null;
 
   console.log(user);
+
+  const editProfileContainer = document.querySelector(
+    ".edit-profile-container",
+  );
+
+  const htmlBody = document.querySelector("body");
+
+  function closeEditProfileContainer() {
+    if (editProfileContainer) {
+      editProfileContainer.classList.remove("open");
+    }
+  }
+
+  function openEditProfileContainer() {
+    if (editProfileContainer) {
+      editProfileContainer.classList.add("open");
+    }
+  }
+
+  function addBackgroundBlur() {
+    htmlBody.appendChild(document.createElement("div")).classList.add("blur");
+  }
+
+  function removeBackgroundBlur() {
+    const blurDiv = htmlBody.querySelector(".blur");
+    if (blurDiv) {
+      htmlBody.removeChild(blurDiv);
+    }
+  }
 
   return (
     <>
@@ -16,6 +45,62 @@ export default function ProfilePage() {
       <BackButton />
       <div className="content-container">
         <div className="profile-page-container">
+          {/* Edit Profile Modal */}
+
+          <div className="edit-profile-container">
+            <span className="edit-profile-container__top">
+              <h3>Edit Profile</h3>
+              <button
+                className="edit-profile-container__close-btn"
+                onClick={() => {
+                  closeEditProfileContainer();
+                  removeBackgroundBlur();
+                }}
+              >
+                X
+              </button>
+            </span>
+
+            <span className="edit-profile-container__middle">
+              <img
+                className="edit-profile-container__profile-picture"
+                src="https://placehold.co/100"
+                alt={`${user?.username}'s profile`}
+              />
+              <button className="edit-profile-container__change-picture-btn">
+                Change Photo
+              </button>
+            </span>
+
+            <span className="edit-profile-container__bottom">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                defaultValue={user?.username}
+              />
+            </span>
+
+            <div className="edit-profile-container__buttons">
+              <button
+                className="edit-profile-container__cancel-btn"
+                onClick={() => {
+                  closeEditProfileContainer();
+                  removeBackgroundBlur();
+                }}
+              >
+                Cancel
+              </button>
+
+              <button className="edit-profile-container__save-btn">
+                Save Changes
+              </button>
+            </div>
+          </div>
+
+          {/* Profile Info and Scores */}
+
           <div className="profile-page__profile-info">
             <img
               className="profile-page__profile-picture"
@@ -46,7 +131,13 @@ export default function ProfilePage() {
             <hr className="profile-page__divider"></hr>
 
             <div className="profile-page__buttons">
-              <button className="profile-page__edit-profile-btn">
+              <button
+                className="profile-page__edit-profile-btn"
+                onClick={() => {
+                  openEditProfileContainer();
+                  addBackgroundBlur();
+                }}
+              >
                 Edit Profile
               </button>
               <button className="profile-page__share-btn">Share Profile</button>

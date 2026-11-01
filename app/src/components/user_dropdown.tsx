@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 export default function UserDropdown() {
   return (
-    <div className="user-dropdown">
+    <div className="user-dropdown" aria-expanded="false" aria-haspopup="true">
       <ul className="user-dropdown__list">
         <li>
           <Link to="/me">Profile</Link>
