@@ -11,6 +11,7 @@ from .serializers import UserSerializer, HighScoreSerializer
 
 User = get_user_model()
 
+
 @api_view(http_method_names=["GET", "POST"])
 def user_list(request):
 
@@ -35,34 +36,36 @@ def user_list(request):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class HighScoreView(APIView):
-    
+
     def get_permissions(self):
-        
+
         if self.request.method == "GET":
             return [permissions.AllowAny()]
-        
+
         return [permissions.IsAuthenticated()]
-    
-    def get(self, request):
-            
-            all_highscores = HighScore.objects.all().order_by("-value")
-            serializer = HighScoreSerializer(all_highscores, many=True)
-            return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
-    
+
+    def get(self):
+
+        all_highscores = HighScore.objects.all().order_by("-value")
+        serializer = HighScoreSerializer(all_highscores, many=True)
+        return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
+
     def post(self, request):
-        
+
         user = request.user
-        
+
         if user.is_authenticated:
             serializer = HighScoreSerializer(data=request.data)
-            
+
             if serializer.is_valid():
                 serializer.save(owned_by=user)
-                return Response(data={"data": serializer.data}, status=status.HTTP_201_CREATED)
-            
+                return Response(
+                    data={"data": serializer.data}, status=status.HTTP_201_CREATED
+                )
+
             else:
                 return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
-            
+
         return Response(status=status.HTTP_401_UNAUTHORIZED)
-            
