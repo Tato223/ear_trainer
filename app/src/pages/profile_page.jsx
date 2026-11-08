@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAuth } from "../auth_context";
 import BackButton from "../components/back_button";
 import Footer from "../components/footer";
@@ -5,37 +6,20 @@ import Header from "../components/header";
 
 export default function ProfilePage() {
   const { user } = useAuth();
+  const [isEditContainerOpen, setIsEditContainerOpen] = useState(false);
 
   if (!user) return null;
 
-  console.log(user);
-
-  const editProfileContainer = document.querySelector(
-    ".edit-profile-container",
-  );
-
-  const htmlBody = document.querySelector("body");
-
-  function closeEditProfileContainer() {
-    if (editProfileContainer) {
-      editProfileContainer.classList.remove("open");
-    }
+  function blurBackground() {
+    document.body
+      .appendChild(document.createElement("div"))
+      .classList.add("blur");
   }
 
-  function openEditProfileContainer() {
-    if (editProfileContainer) {
-      editProfileContainer.classList.add("open");
-    }
-  }
-
-  function addBackgroundBlur() {
-    htmlBody.appendChild(document.createElement("div")).classList.add("blur");
-  }
-
-  function removeBackgroundBlur() {
-    const blurDiv = htmlBody.querySelector(".blur");
+  function unblurBackground() {
+    const blurDiv = document.body.querySelector(".blur");
     if (blurDiv) {
-      htmlBody.removeChild(blurDiv);
+      document.body.removeChild(blurDiv);
     }
   }
 
@@ -47,14 +31,16 @@ export default function ProfilePage() {
         <div className="profile-page-container">
           {/* Edit Profile Modal */}
 
-          <div className="edit-profile-container">
+          <div
+            className={`edit-profile-container ${isEditContainerOpen ? "open" : ""}`}
+          >
             <span className="edit-profile-container__top">
               <h3>Edit Profile</h3>
               <button
                 className="edit-profile-container__close-btn"
                 onClick={() => {
-                  closeEditProfileContainer();
-                  removeBackgroundBlur();
+                  setIsEditContainerOpen(false);
+                  unblurBackground();
                 }}
               >
                 X
@@ -86,8 +72,8 @@ export default function ProfilePage() {
               <button
                 className="edit-profile-container__cancel-btn"
                 onClick={() => {
-                  closeEditProfileContainer();
-                  removeBackgroundBlur();
+                  setIsEditContainerOpen(false);
+                  unblurBackground();
                 }}
               >
                 Cancel
@@ -134,8 +120,8 @@ export default function ProfilePage() {
               <button
                 className="profile-page__edit-profile-btn"
                 onClick={() => {
-                  openEditProfileContainer();
-                  addBackgroundBlur();
+                  setIsEditContainerOpen(true);
+                  blurBackground();
                 }}
               >
                 Edit Profile
