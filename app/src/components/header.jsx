@@ -2,14 +2,7 @@ import { Link } from "react-router";
 import { useAuth } from "../auth_context";
 import { useEffect } from "react";
 
-// Later fetch from users API endpoint
-// let isLoggedIn = false;
-
 /*TODO -> 
-- Figure out React states
-- Create /auth page
-- Figure out MIDI logic
-- Additional pages for quiz, endless, and library selections
 - User sidebar with basic options
 - PRIVACY POLICY & TOS
 */
@@ -26,7 +19,7 @@ export default function Header() {
   }
 
   return (
-    <header user={user}>
+    <header>
       <Link to="/">
         <h2 className="header-title">EarTrainer</h2>
       </Link>
@@ -40,7 +33,11 @@ export default function Header() {
 
           {user ? (
             <Link to={`/users/${user?.username}`}>
-              <img className="user-pfp__header" src="https://placehold.co/40" />
+              <img
+                className="user-pfp__header"
+                src="https://placehold.co/40"
+                alt={`${user.username}'s profile picture`}
+              />
             </Link>
           ) : (
             <Link to="/auth/signup">

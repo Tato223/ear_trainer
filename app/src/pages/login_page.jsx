@@ -4,6 +4,7 @@ import FormBlock from "../components/form_block";
 import PropTypes from "prop-types";
 import { Form, Link, replace } from "react-router";
 import { useNavigate } from "react-router";
+import { useAuth } from "../auth_context";
 
 export default function LoginPage() {
   return (
@@ -16,8 +17,8 @@ export default function LoginPage() {
 }
 
 export function LoginContent() {
-
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -40,11 +41,10 @@ export function LoginContent() {
       }
 
       const responseData = await response.json();
-      localStorage.setItem("authToken", responseData.token);
+      await login(responseData.token);
       responseData ? console.log(`Response: ${responseData}`) : null;
 
       return navigate("/quizzes/");
-
     } catch (error) {
       console.error(error);
     }
