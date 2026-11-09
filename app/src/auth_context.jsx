@@ -5,6 +5,7 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("authToken"));
 
   async function fetchUser(token) {
     const response = await fetch("http://127.0.0.1:8000/auth/me/", {
@@ -45,10 +46,12 @@ export function AuthProvider({ children }) {
 
   async function login(token) {
     localStorage.setItem("authToken", token);
+    setToken(token);
     try {
       await fetchUser(token);
     } catch (e) {
       localStorage.removeItem("authToken");
+      setToken(null);
       setUser(null);
       throw e;
     }
@@ -56,11 +59,18 @@ export function AuthProvider({ children }) {
 
   function logout() {
     localStorage.removeItem("authToken");
+    setToken(null);
     setUser(null);
   }
 
+  function getToken() {
+    return localStorage.getItem("authToken");
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, login, logout, token, getToken }}
+    >
       {children}
     </AuthContext.Provider>
   );

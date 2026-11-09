@@ -8,7 +8,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        return User.objects.create_user(**validated_data)  # type: ignore
 
     class Meta:
         model = User
@@ -19,6 +19,16 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class HighScoreSerializer(serializers.ModelSerializer):
+
+    owned_by = serializers.ReadOnlyField(source="owned_by.username")
+    category = serializers.ChoiceField(choices=Category.choices)
+
+    class Meta:
+        model = HighScore
+        fields = ["value", "owned_by", "category"]
+
+
+class UserHighScoreSerializer(serializers.ModelSerializer):
 
     owned_by = serializers.ReadOnlyField(source="owned_by.username")
     category = serializers.ChoiceField(choices=Category.choices)

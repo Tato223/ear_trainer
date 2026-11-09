@@ -183,9 +183,9 @@ a {
   display: flex;
   flex-direction: column;
 
-  background-image:
+  /* background-image:
     radial-gradient(ellipse 900px 500px at 78% 15%, rgba(200, 155, 92, 0.08), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 10% 85%, rgba(108, 136, 168, 0.06), transparent 60%);
+    radial-gradient(ellipse 700px 500px at 10% 85%, rgba(108, 136, 168, 0.06), transparent 60%); */
 
 }
 

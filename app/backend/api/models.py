@@ -28,5 +28,13 @@ class HighScore(models.Model):
         max_length=100, choices=Category.choices, default=Category.PITCH_RECOGNITION
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["owned_by", "category"],
+                name="unique_highscore_per_user_category",
+            )
+        ]
+
     def __str__(self) -> str:
         return f"High Score: {self.value} by {str(self.owned_by)}"

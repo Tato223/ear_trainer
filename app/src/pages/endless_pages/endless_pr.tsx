@@ -4,10 +4,10 @@ import * as quizLogic from "../../quiz_logic.ts";
 import { PitchRecognitionQuestion, NaturalNote } from "../../types.ts";
 import { useEffect, useState } from "react";
 import * as tone from "tone";
-import {useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const noteLength = "4n"; //Quarter note
-const defaultOctave = 3
+const defaultOctave = 3;
 
 export default function EndlessQuizPage() {
   return (
@@ -28,7 +28,7 @@ export function EndlessQuizPageContent() {
     );
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   //play the correct note
   useEffect(() => {
@@ -44,22 +44,21 @@ export function EndlessQuizPageContent() {
     };
   }, [currentQuestion, isPlaying]);
 
-  const [questionsCorrect, setQuestionsCorrect] =
-    useState<number>(0);
+  const [questionsCorrect, setQuestionsCorrect] = useState<number>(0);
 
   const quizData = {
     correct: questionsCorrect,
     quizEndpoint: "/pitch_recognition",
+    category: "pitch_recognition",
   };
 
   function handleAnswer(selected: NaturalNote): void {
-
-    const isAnswerCorrect: boolean = (selected == currentQuestion.correctAnswer)
+    const isAnswerCorrect: boolean = selected == currentQuestion.correctAnswer;
 
     // end quiz if an answer is correct
     if (!isAnswerCorrect) {
-        navigate("/endless/complete", {replace: true, state: quizData})
-        return;
+      navigate("/endless/complete", { replace: true, state: quizData });
+      return;
     }
 
     // count correct answers
@@ -77,9 +76,7 @@ export function EndlessQuizPageContent() {
   }
 
   function nextPitchRecognitionQuestion() {
-    setCurrentQuestion(
-      quizLogic.createPitchRecognitionQuestion(questionText),
-    );
+    setCurrentQuestion(quizLogic.createPitchRecognitionQuestion(questionText));
   }
 
   function toggleIsPlaying() {

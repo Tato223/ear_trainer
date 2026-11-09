@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
-from .models import HighScore
+from .models import Category, HighScore
 from rest_framework.decorators import APIView, api_view
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from .serializers import UserSerializer, HighScoreSerializer
+from .serializers import UserHighScoreSerializer, UserSerializer, HighScoreSerializer
 
 # Create your views here.
 
@@ -25,7 +25,7 @@ def user_list(request):
 
         if serializer.is_valid():
 
-            User.objects.create_user(
+            User.objects.create_user(  # type: ignore
                 username=request.data.get("username"),
                 email=request.data.get("email"),
                 password=request.data.get("password"),
@@ -40,32 +40,81 @@ def user_list(request):
 class HighScoreView(APIView):
 
     def get_permissions(self):
-
         if self.request.method == "GET":
             return [permissions.AllowAny()]
-
         return [permissions.IsAuthenticated()]
 
-    def get(self):
+    def get(self, request):
+        category = request.query_params.get("category")
 
-        all_highscores = HighScore.objects.all().order_by("-value")
-        serializer = HighScoreSerializer(all_highscores, many=True)
+        if category not in Category.values:
+            return Response(
+                data={
+                    "category": [
+                        f"Required. Must be one of: {', '.join(Category.values)}"
+                    ]
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        highscores = (
+            HighScore.objects.filter(category=category)
+            .select_related("owned_by")
+            .order_by("-value")
+        )
+        serializer = HighScoreSerializer(highscores, many=True)
         return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request):
+        serializer = HighScoreSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        assert isinstance(serializer.validated_data, dict)
 
-        user = request.user
+        category = serializer.validated_data["category"]
+        value = serializer.validated_data["value"]
 
-        if user.is_authenticated:
-            serializer = HighScoreSerializer(data=request.data)
+        score, created = HighScore.objects.get_or_create(
+            owned_by=request.user,
+            category=category,
+            defaults={"value": value},
+        )
 
-            if serializer.is_valid():
-                serializer.save(owned_by=user)
-                return Response(
-                    data={"data": serializer.data}, status=status.HTTP_201_CREATED
-                )
+        if not created and value > score.value:
+            score.value = value
+            score.save(update_fields=["value"])
 
-            else:
-                return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        return Response(
+            data={"data": HighScoreSerializer(score).data},
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+        )
 
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+class UserHighScoreView(APIView):
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        category = request.query_params.get("category")
+
+        if category not in Category.values:
+            return Response(
+                data={
+                    "category": [
+                        f"Required. Must be one of: {', '.join(Category.values)}"
+                    ]
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        highscore = (
+            HighScore.objects.filter(owned_by=user, category=category)
+            .select_related("owned_by")
+            .order_by("-value")
+            .first()
+        )
+        serializer = UserHighScoreSerializer(highscore)
+        return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
