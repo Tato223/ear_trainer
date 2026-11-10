@@ -152,7 +152,7 @@ export function UserLeaderboardCard({ selectedCategory }) {
   async function fetchUserHighscore() {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/${user.username}/highscore/?category=${selectedCategory}`,
+        `http://127.0.0.1:8000/users/${user.username}/highscore/?category=${selectedCategory}`,
       );
       const data = await response.json();
       setUserHighScore(data.data?.value ?? null);

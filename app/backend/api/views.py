@@ -5,7 +5,12 @@ from .models import Category, HighScore
 from rest_framework.decorators import APIView, api_view
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from .serializers import UserHighScoreSerializer, UserSerializer, HighScoreSerializer
+from .serializers import (
+    AllUserHighScoresSerializer,
+    UserHighScoreSerializer,
+    UserSerializer,
+    HighScoreSerializer,
+)
 
 # Create your views here.
 
@@ -100,21 +105,40 @@ class UserHighScoreView(APIView):
         user = get_object_or_404(User, username=username)
         category = request.query_params.get("category")
 
-        if category not in Category.values:
+        if category and category not in Category.values:
             return Response(
                 data={
                     "category": [
-                        f"Required. Must be one of: {', '.join(Category.values)}"
+                        f"Invalid category. Must be one of: {', '.join(Category.values)}"
                     ]
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        highscore = (
-            HighScore.objects.filter(owned_by=user, category=category)
-            .select_related("owned_by")
-            .order_by("-value")
-            .first()
-        )
-        serializer = UserHighScoreSerializer(highscore)
-        return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
+        try:
+
+            if category:
+                highscores = (
+                    HighScore.objects.filter(owned_by=user, category=category)
+                    .order_by("-value")
+                    .first()
+                )
+                serializer = UserHighScoreSerializer(highscores)
+                return Response(
+                    data={"data": serializer.data}, status=status.HTTP_200_OK
+                )
+
+            else:
+                highscores = (
+                    HighScore.objects.filter(owned_by=user)
+                    .select_related("owned_by")
+                    .order_by("-value")
+                )
+
+                serializer = AllUserHighScoresSerializer(highscores, many=True)
+                return Response(
+                    data={"data": serializer.data}, status=status.HTTP_200_OK
+                )
+
+        except Exception:
+            raise Exception("An error occurred while retrieving high scores.")

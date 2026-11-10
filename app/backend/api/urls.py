@@ -9,7 +9,7 @@ urlpatterns = [
         name="HighScoreView",
     ),
     path(
-        "<str:username>/highscore/",
+        "users/<str:username>/highscore/",
         views.UserHighScoreView.as_view(),
         name="UserHighScoreView",
     ),

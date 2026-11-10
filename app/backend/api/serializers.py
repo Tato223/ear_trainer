@@ -36,3 +36,12 @@ class UserHighScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = HighScore
         fields = ["value", "owned_by", "category"]
+
+
+class AllUserHighScoresSerializer(serializers.ModelSerializer):
+
+    owned_by = serializers.ReadOnlyField(source="owned_by.username")
+
+    class Meta:
+        model = HighScore
+        fields = ["value", "owned_by", "category"]
