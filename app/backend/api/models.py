@@ -20,7 +20,7 @@ class Category(models.TextChoices):
 class HighScore(models.Model):
     value = models.IntegerField(default=0)
 
-    owned_by = models.OneToOneField(
+    owned_by = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="Owner"
     )
 

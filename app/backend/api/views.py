@@ -42,6 +42,25 @@ def user_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# View only user view, no auth required
+class UserView(APIView):
+
+    def get_permissions(self):
+        return [permissions.AllowAny()]
+
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+
+        if not user:
+            return Response(
+                data={"error": f"User {username} not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = UserSerializer(user)
+        return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
+
+
 class HighScoreView(APIView):
 
     def get_permissions(self):
@@ -75,22 +94,23 @@ class HighScoreView(APIView):
         serializer.is_valid(raise_exception=True)
         assert isinstance(serializer.validated_data, dict)
 
-        category = serializer.validated_data["category"]
+        category = request.query_params["category"]
         value = serializer.validated_data["value"]
 
-        score, created = HighScore.objects.get_or_create(
+        new_score, create = HighScore.objects.get_or_create(
             owned_by=request.user,
             category=category,
             defaults={"value": value},
         )
 
-        if not created and value > score.value:
-            score.value = value
-            score.save(update_fields=["value"])
+        if not create and value > new_score.value:
+            new_score.value = value
+            new_score.save(update_fields=["value"])
 
+        serializer = HighScoreSerializer(new_score)
         return Response(
-            data={"data": HighScoreSerializer(score).data},
-            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+            data={"data": serializer.data},
+            status=status.HTTP_201_CREATED if create else status.HTTP_200_OK,
         )
 
 
@@ -105,40 +125,63 @@ class UserHighScoreView(APIView):
         user = get_object_or_404(User, username=username)
         category = request.query_params.get("category")
 
-        if category and category not in Category.values:
-            return Response(
-                data={
-                    "category": [
-                        f"Invalid category. Must be one of: {', '.join(Category.values)}"
-                    ]
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        validated_category = validate_category_query_param(category)
 
         try:
 
-            if category:
-                highscores = (
-                    HighScore.objects.filter(owned_by=user, category=category)
-                    .order_by("-value")
-                    .first()
-                )
+            if validated_category:
+                highscores = find_single_highscore(user, category)
                 serializer = UserHighScoreSerializer(highscores)
                 return Response(
                     data={"data": serializer.data}, status=status.HTTP_200_OK
                 )
 
-            else:
-                highscores = (
-                    HighScore.objects.filter(owned_by=user)
-                    .select_related("owned_by")
-                    .order_by("-value")
-                )
-
+            elif not validated_category or not category:
+                highscores = find_all_highscores_by_user(user)
                 serializer = AllUserHighScoresSerializer(highscores, many=True)
+
                 return Response(
                     data={"data": serializer.data}, status=status.HTTP_200_OK
                 )
 
         except Exception:
             raise Exception("An error occurred while retrieving high scores.")
+
+
+class AllUserHighScoreView(APIView):
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        highscores = find_all_highscores_by_user(user)
+        serializer = AllUserHighScoresSerializer(highscores, many=True)
+        return Response(data={"data": serializer.data}, status=status.HTTP_200_OK)
+
+
+def validate_category_query_param(category):
+    if category not in Category.values:
+        return Response(
+            data={
+                "category": [f"Required. Must be one of: {', '.join(Category.values)}"]
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    return category
+
+
+def find_single_highscore(user, category):
+    try:
+        return HighScore.objects.get(owned_by=user, category=category)
+    except HighScore.DoesNotExist:
+        return None
+
+
+def find_all_highscores_by_user(user):
+    try:
+        return HighScore.objects.filter(owned_by=user).select_related("owned_by").all()
+    except HighScore.DoesNotExist:
+        return None
